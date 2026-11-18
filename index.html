@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AceLens</title>
+<meta name="description" content="AceLens for Windows: your junior tennis tournaments, the whole field in one list, draws, deadlines, a points plan and a UTR forecast.">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #03121a; --s1: #0a222c; --s2: #0f2e39; --line: rgba(255,255,255,.09);
+    --text: #f0f8f5; --text2: #b9cfd1; --muted: #87a4a9;
+    --mint: #3df2c4; --ball: #e6ff3f; --clay: #ff8a5b; --ink: #03141b;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: Outfit, "Segoe UI", system-ui, sans-serif; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .glow { position: fixed; inset: 0; z-index: -1; background:
+      radial-gradient(55% 45% at 15% 0%, rgba(61,242,196,.13), transparent 70%),
+      radial-gradient(45% 40% at 90% 8%, rgba(230,255,63,.08), transparent 70%), var(--bg); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; }
+  .brand img { width: 34px; height: 34px; border-radius: 9px; }
+  nav a { color: var(--text2); text-decoration: none; margin-left: 22px; font-size: 14.5px; }
+  nav a:hover { color: var(--mint); }
+  .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; padding: 56px 0 64px; }
+  .eyebrow { color: var(--mint); text-transform: uppercase; letter-spacing: .1em; font-size: 12.5px; font-weight: 700; }
+  h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.05; margin: 12px 0 18px; letter-spacing: -.01em; }
+  h1 em { font-style: normal; background: linear-gradient(90deg, var(--mint), var(--ball)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { color: var(--text2); font-size: 18px; max-width: 560px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; border-radius: 12px; padding: 13px 20px; font-weight: 650; font-size: 15.5px; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
+  .btn.primary { background: var(--mint); color: var(--ink); box-shadow: 0 8px 30px rgba(61,242,196,.25); }
+  .btn.primary:hover { transform: translateY(-1px); box-shadow: 0 12px 36px rgba(61,242,196,.35); }
+  .btn.ghost { border: 1px solid var(--line); color: var(--text); }
+  .btn.ghost:hover { border-color: var(--mint); }
+  .small { color: var(--muted); font-size: 13px; margin-top: 12px; }
+  .card { background: var(--s1); border: 1px solid var(--line); border-radius: 18px; }
+  .mock { padding: 18px; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+  .mock .bar { color: var(--mint); font-weight: 650; font-size: 15px; margin-bottom: 12px; }
+  .row { display: grid; grid-template-columns: 26px 1fr 54px 54px 46px; gap: 8px; align-items: center; padding: 9px 10px; border-radius: 10px; font-size: 13.5px; }
+  .row.head { color: var(--muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; }
+  .row.me { background: rgba(61,242,196,.1); outline: 1px solid rgba(61,242,196,.35); }
+  .row .n { text-align: right; font-variant-numeric: tabular-nums; }
+  .you { background: var(--mint); color: var(--ink); border-radius: 6px; padding: 0 6px; font-size: 11px; font-weight: 700; margin-left: 6px; }
+  .hot { color: var(--clay); } .cool { color: #4be58f; }
+  section { padding: 56px 0; }
+  h2 { font-size: 30px; margin: 0 0 8px; }
+  .sub { color: var(--text2); margin: 0 0 28px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .feat { padding: 22px; }
+  .feat h3 { margin: 10px 0 6px; font-size: 17px; }
+  .feat p { margin: 0; color: var(--text2); font-size: 14.5px; }
+  .dot { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: rgba(61,242,196,.12); color: var(--mint); font-size: 18px; }
+  .steps { counter-reset: s; display: grid; gap: 14px; }
+  .step { display: grid; grid-template-columns: 44px 1fr; gap: 14px; padding: 18px 20px; }
+  .step::before { counter-increment: s; content: counter(s); width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--mint), var(--ball)); color: var(--ink); font-weight: 800; }
+  .step h3 { margin: 0 0 4px; font-size: 16.5px; }
+  .step p { margin: 0; color: var(--text2); font-size: 14.5px; }
+  .contact { margin-top: 18px; padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+  .contact strong { color: var(--ball); }
+  .faq details { padding: 16px 20px; margin-bottom: 10px; }
+  .faq summary { cursor: pointer; font-weight: 600; }
+  .faq p { color: var(--text2); margin: 10px 0 0; font-size: 14.5px; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: 13px; }
+  footer a { color: var(--text2); }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; padding-top: 24px; }
+    .grid3 { grid-template-columns: 1fr; }
+    nav { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="wrap">
+  <header>
+    <div class="brand"><img src="icon.png" alt="">AceLens</div>
+    <nav><a href="#features">Features</a><a href="#buy">How to buy</a><a href="#faq">FAQ</a></nav>
+  </header>
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow">For junior tennis families · Windows</div>
+      <h1>Every tournament, <em>the whole field</em>, one screen.</h1>
+      <p class="lead">AceLens brings your USTA junior tournaments together: every player's national points, seeding rank, UTR and WTN in one list, where you'd place and which flight you're in, the draw, entry deadlines, a points plan and where your UTR is heading.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/inbantamizhselvan/acelens/releases/latest/download/AceLens-Setup.exe">⬇ Download for Windows</a>
+        <a class="btn ghost" href="#buy">How to buy</a>
+      </div>
+      <div class="small">Windows 10 or 11 · 64-bit · about 3 MB · needs an activation code to run</div>
+    </div>
+    <div class="card mock" aria-hidden="true">
+      <div class="bar">Sam is #4 of 44 by points — likely seed 4, in Flight 1.</div>
+      <div class="row head"><span>#</span><span>Player</span><span class="n">Pts</span><span class="n">UTR</span><span class="n">WTN</span></div>
+      <div class="row"><span>1</span><span>Leo Park</span><span class="n">2,531</span><span class="n hot">9.12</span><span class="n hot">19.2</span></div>
+      <div class="row"><span>2</span><span>Ethan Cole</span><span class="n">2,444</span><span class="n hot">9.49</span><span class="n hot">17.7</span></div>
+      <div class="row"><span>3</span><span>Ravi Shah</span><span class="n">1,966</span><span class="n hot">8.76</span><span class="n hot">22.2</span></div>
+      <div class="row me"><span>4</span><span>Sam Rivera<span class="you">You</span></span><span class="n">1,939</span><span class="n">8.56</span><span class="n">23.3</span></div>
+      <div class="row"><span>5</span><span>Noah Kim</span><span class="n">1,903</span><span class="n cool">8.47</span><span class="n cool">23.8</span></div>
+      <div class="row"><span>6</span><span>Max Brooks</span><span class="n">1,482</span><span class="n cool">8.16</span><span class="n cool">26.2</span></div>
+    </div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <h2>Built for the weekend before the tournament</h2>
+    <p class="sub">Everything you'd otherwise piece together from five browser tabs.</p>
+    <div class="grid3">
+      <div class="card feat"><div class="dot">👥</div><h3>The whole field, one list</h3><p>National points and ranks, seeding list, UTR, WTN and your head-to-head for every player, with the cut line and flights marked. Click anyone to scout them.</p></div>
+      <div class="card feat"><div class="dot">🗂</div><h3>Draw &amp; your road</h3><p>Read the draw once through a private, read-only sign-in that's erased right after. See who you could meet each round, and record results as you go.</p></div>
+      <div class="card feat"><div class="dot">📈</div><h3>UTR forecast</h3><p>Where your rating is heading after each tournament, worked out from your matches and your opponents.</p></div>
+      <div class="card feat"><div class="dot">🎯</div><h3>Points planner</h3><p>Which tournaments to enter, using USTA's point tables and your place in each field, with your best-6 and calendar in mind.</p></div>
+      <div class="card feat"><div class="dot">⏰</div><h3>Deadlines &amp; reminders</h3><p>Every entry deadline you follow, with reminders and a calendar file so nothing slips.</p></div>
+      <div class="card feat"><div class="dot">🌤</div><h3>Tennis weather &amp; trips</h3><p>Hour-by-hour playability at the venue, what to pack, drive time and trip costs.</p></div>
+    </div>
+    <p class="small" style="margin-top:18px">Also: find tournaments near you with filters, season review, trophy cabinet with photos, an opponents book, and Ace, an offline helper that answers questions about your tournaments.</p>
+  </div>
+</section>
+
+<section id="buy">
+  <div class="wrap">
+    <h2>How to buy</h2>
+    <p class="sub">One licence works on one PC. Activation is offline and private.</p>
+    <div class="steps">
+      <div class="card step"><div><h3>Download and install</h3><p>Use the download button above. Windows may say "Windows protected your PC" because AceLens is new: click <em>More info</em> → <em>Run anyway</em>.</p></div></div>
+      <div class="card step"><div><h3>Copy your machine code</h3><p>Open AceLens. It shows a code for your PC, like <code>7KQ2-M4XD-9PRT-3HWB</code>. It contains nothing personal.</p></div></div>
+      <div class="card step"><div><h3>Send it with your payment</h3><p>Email your machine code. You'll get payment details back, and once it's paid, your activation code.</p></div></div>
+      <div class="card step"><div><h3>Paste the activation code</h3><p>AceLens unlocks on that PC, then a short setup gets you going. Updates are free and arrive inside the app.</p></div></div>
+    </div>
+    <div class="card contact">
+      <div>Price: <strong id="price">contact for price</strong><br><span class="small" style="margin:0">Questions, buying, or moving to a new PC:</span></div>
+      <a class="btn primary" id="mail" href="#">Email to buy</a>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="faq">
+  <div class="wrap">
+    <h2>Questions</h2>
+    <details class="card"><summary>Is my data private?</summary><p>Yes. Everything stays on your PC. AceLens reads public tournament pages directly from your computer, gently, and never sends your data to the seller or anyone else.</p></details>
+    <details class="card"><summary>Do I need a USTA or UTR account?</summary><p>Not for tournaments, fields and national standings. UTR ratings use your own free UTR sign-in, done once in a window; AceLens never sees your password. Draws need a one-time USTA sign-in that's erased right after reading.</p></details>
+    <details class="card"><summary>What if I get a new computer?</summary><p>Email the new PC's machine code and you'll get a code for it. Windows updates and reinstalls don't affect your activation.</p></details>
+    <details class="card"><summary>Does it work on Mac?</summary><p>Not yet: Windows 10 and 11 only.</p></details>
+    <details class="card"><summary>Is AceLens part of USTA or UTR?</summary><p>No. AceLens is independent and not affiliated with, endorsed by or sponsored by the USTA, Universal Tennis (UTR) or the National Weather Service. Always check official sources before entering a tournament.</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© 2026 Inban Tamizhselvan · AceLens is proprietary software · <a href="EULA.txt">Licence agreement</a> · Not affiliated with USTA, UTR or the NWS.</div>
+</footer>
+
+<script>
+  // Fill these in when ready: an email address for buyers, and a price (e.g. "$49 one-time").
+  const CONTACT = "";
+  const PRICE = "";
+  if (PRICE) document.getElementById("price").textContent = PRICE;
+  const mail = document.getElementById("mail");
+  if (CONTACT) {
+    mail.href = "mailto:" + CONTACT + "?subject=" + encodeURIComponent("AceLens: buying a licence") +
+      "&body=" + encodeURIComponent("Hi! I'd like to buy AceLens.\n\nMy machine code: ");
+  } else {
+    mail.textContent = "Contact coming soon";
+    mail.removeAttribute("href");
+    mail.style.opacity = ".55";
+  }
+</script>
+</body>
+</html>

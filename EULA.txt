@@ -1,0 +1,83 @@
+ACELENS — END-USER LICENCE AGREEMENT
+Version 1.0 · Copyright © 2026 Inban Tamizhselvan. All rights reserved.
+
+Please read this agreement before installing AceLens. By installing, activating
+or using AceLens you agree to it. If you don't agree, don't install it.
+
+1. WHO THIS IS BETWEEN
+This agreement is between you (the person who bought the licence, the
+"Licensee") and Inban Tamizhselvan (the "Owner"), who owns AceLens.
+
+2. WHAT YOU GET
+You get a personal, non-exclusive, non-transferable licence to install and use
+one copy of AceLens on ONE computer, for your own or your family's personal,
+non-commercial use. AceLens is licensed, not sold: the Owner keeps all rights,
+title and ownership.
+
+3. ACTIVATION — ONE COMPUTER
+AceLens shows a machine code for the computer it's installed on. The Owner sends
+an activation code made for that machine code only. An activation code works
+only on the computer it was made for.
+If you replace your computer, ask the Owner for a code for the new one; the old
+copy should then be uninstalled. The Owner may decline repeated or unusual
+transfer requests.
+
+4. WHAT YOU MAY NOT DO
+You may not, and may not let anyone else:
+  a. copy AceLens, its activation code, or its files to another computer, or
+     share them with anyone;
+  b. sell, resell, rent, lend, sublicense or give away AceLens or an activation
+     code;
+  c. reverse engineer, decompile, disassemble, or try to work out its source
+     code, algorithms or structure, except where the law allows it despite this
+     restriction;
+  d. get around, disable or tamper with the activation or any protection;
+  e. modify it, or build a similar or competing product from it;
+  f. use AceLens, its output or its files to train or build any AI or
+     machine-learning model;
+  g. remove any copyright or ownership notice.
+
+5. THIRD-PARTY WEBSITES AND DATA
+AceLens is NOT affiliated with, endorsed by or sponsored by the United States
+Tennis Association (USTA), Universal Tennis (UTR) or the US National Weather
+Service. Their names are used only to describe where information comes from.
+AceLens reads public pages from your own computer, at a gentle pace, and uses
+your own sign-ins where a site asks for one (AceLens never sees your
+passwords). You are responsible for using those websites in line with their own
+terms. Those websites can change or stop working at any time; the Owner can't
+guarantee that any feature that depends on them keeps working.
+Forecasts, estimates, projected draws, points plans and weather are estimates
+only and may be wrong. Always check official sources (for example USTA) before
+entering a tournament or making a decision.
+
+6. YOUR DATA
+AceLens keeps your data on your computer. The Owner doesn't collect your data
+through the app. Requests to USTA, UTR and the National Weather Service go
+directly from your computer to them.
+
+7. UPDATES
+The Owner may offer updates. Updates are covered by this agreement unless they
+come with a new one.
+
+8. NO WARRANTY
+ACELENS IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NON-INFRINGEMENT, TO THE FULLEST EXTENT THE LAW ALLOWS.
+
+9. LIMITATION OF LIABILITY
+TO THE FULLEST EXTENT THE LAW ALLOWS, THE OWNER IS NOT LIABLE FOR ANY INDIRECT,
+INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES, OR LOST DATA, ARISING FROM ACELENS
+OR ITS USE. THE OWNER'S TOTAL LIABILITY IS LIMITED TO THE AMOUNT YOU PAID FOR
+ACELENS.
+
+10. ENDING THIS LICENCE
+This licence ends automatically if you break any of its terms. When it ends you
+must stop using AceLens and delete it.
+
+11. LAW
+This agreement is governed by the laws of the State of New Jersey, USA, without
+regard to its conflict-of-law rules.
+
+12. CONTACT
+Questions, transfers to a new computer, or support: contact the seller you bought
+AceLens from.
