@@ -360,7 +360,7 @@
         <a class="btn primary" href="https://github.com/inbantamizhselvan/acelens/releases/latest/download/AceLens-Setup.exe">⬇ Download for Windows</a>
         <a class="btn ghost" href="#tour">Take the tour ↓</a>
       </div>
-      <div class="small"><b style="color:var(--ball)" class="cfg-trial">14-day free trial</b> · then <span class="cfg-price">$15.99 a year</span> · Windows 10 or 11 · free updates</div>
+      <div class="small"><b style="color:var(--ball)" class="cfg-trial">1-month free trial</b> · no card, no sign-up · Windows 10 or 11 · free updates</div>
     </div>
     <div class="hero-art float" id="heroart" title="Hover me — click to bounce">
       <svg class="hero-ring" viewBox="0 0 1024 1024" aria-hidden="true"><defs><linearGradient id="ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3df2c4" stop-opacity=".9"/><stop offset="1" stop-color="#e6ff3f" stop-opacity=".15"/></linearGradient></defs><g class="spin"><circle cx="512" cy="512" r="490" fill="none" stroke="url(#ring)" stroke-width="3" stroke-dasharray="6 18"/></g></svg>
@@ -650,7 +650,7 @@
 
 <section id="buy">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="eyebrow">Get AceLens</span><h2>How to buy</h2><p class="sub"><b class="cfg-trial">Try everything free for 14 days</b> — no card, no sign-up. Then <b class="cfg-price">$15.99 a year</b> for one PC, every update included.</p></div>
+    <div class="sec-head reveal"><span class="eyebrow">Get AceLens</span><h2>How to buy</h2><p class="sub"><b>Try everything free for a month</b> — no card, no sign-up. After the trial, request access below and we'll get you set up.<span class="cfg-price-line"></span></p></div>
     <div class="steps reveal">
       <div class="card step"><h3>Download &amp; install</h3><p>Windows may say "Windows protected your PC" because AceLens is new: click <em>More info</em> → <em>Run anyway</em>.</p></div>
       <div class="card step"><h3>Copy your machine code</h3><p>AceLens shows a code for your PC, like <code>7KQ2-M4XD-9PRT-3HWB</code>. It contains nothing personal.</p></div>
@@ -709,7 +709,7 @@
 <section id="faq" class="faq">
   <div class="wrap">
     <div class="sec-head reveal"><h2>Questions</h2></div>
-    <details class="card"><summary>Is there a free trial? What does it cost after?</summary><p>Yes — every new install has <b>14 days free</b> with everything unlocked, no card or sign-up. After that, AceLens is <b>$15.99 a year</b> for one PC, with all updates included. When the trial ends, AceLens shows a button that brings you to the form above with your machine code filled in; your data stays on your PC the whole time.</p></details>
+    <details class="card"><summary>Is there a free trial?</summary><p>Yes — every new install has <b>a month free</b> with everything unlocked, no card or sign-up. When the trial ends, AceLens shows a button that brings you to the request form with your machine code filled in, or email <a href="mailto:acelens.app@gmail.com">acelens.app@gmail.com</a> — we'll get you set up. Your data stays on your PC the whole time.</p></details>
     <details class="card"><summary>Is my data private?</summary><p>Yes. Everything stays on your PC. AceLens reads public tournament pages directly from your computer, gently, and never sends your data to the seller or anyone else. The optional morning email is sent only to the addresses you choose.</p></details>
     <details class="card"><summary>Do I need a USTA or UTR account?</summary><p>Not for finding tournaments, fields and national standings. UTR ratings use your own UTR sign-in, done once in a window inside AceLens. Your upcoming tournaments, match history, ranking points and match-day draws use your USTA sign-in, also done once inside AceLens. AceLens never sees your passwords and only reads.</p></details>
     <details class="card"><summary>How accurate is the weather a month out?</summary><p>Within about 6 days it's the National Weather Service forecast at the venue. Further out it's a long-range prediction: 30 years of that date at the venue, adjusted by NOAA's official outlook for this year — a guide for planning, replaced by the real forecast automatically.</p></details>
@@ -750,7 +750,7 @@
       <div class="card ct-box">
         <h3>🔑 Licence basics</h3>
         <ul>
-          <li>14 days free, then $15.99 a year for one Windows PC</li>
+          <li>A month free, then contact us for access — one licence per Windows PC</li>
           <li>Activation is offline: the code is made for your PC's machine code</li>
           <li>Up to 3 players (brothers and sisters) on the same licence</li>
           <li>Updates are free and arrive inside the app</li>
@@ -782,7 +782,7 @@
 <script>
   // Fill these in when ready: an email address for buyers, and a price (e.g. "$49 one-time").
   const CONTACT = "acelens.app@gmail.com";
-  let PRICE = "$15.99 a year";
+  let PRICE = "";
   if (PRICE) document.getElementById("price").textContent = PRICE;
   const mail = document.getElementById("mail");
   if (CONTACT) {
@@ -836,10 +836,13 @@
     .then((r) => r.json())
     .then((c) => {
       if (!c || !c.ok) return;
-      PRICE = `$${c.price} a ${c.period}`;
-      document.querySelectorAll(".cfg-price").forEach((e) => (e.textContent = PRICE));
-      document.querySelectorAll(".cfg-trial").forEach((e) => (e.textContent = e.textContent.replace(/\d+-day|\d+ days/, (m) => m.replace(/\d+/, c.trial_days))));
-      const p = document.getElementById("price"); if (p) p.textContent = PRICE;
+      // a price shows only once the seller has set one in AceLens Admin
+      if (c.price) {
+        PRICE = `$${c.price} a ${c.period}`;
+        document.querySelectorAll(".cfg-price-line").forEach((e) => (e.textContent = ` Access is ${PRICE}.`));
+        const p = document.getElementById("price"); if (p) p.textContent = PRICE;
+      }
+      if (c.trial_days) document.querySelectorAll(".cfg-trial").forEach((e) => (e.textContent = c.trial_days % 30 === 0 && c.trial_days <= 90 ? `${c.trial_days / 30}-month free trial` : `${c.trial_days}-day free trial`));
     })
     .catch(() => {});
 
@@ -879,7 +882,7 @@
       if (bad.length) { $("#gcMsg").innerHTML = `<span class="err">Please check: ${bad.map((b) => (b === "machine" ? "machine code" : b)).join(", ")}.</span>`; return; }
       const btn = $("#gcSend"); btn.disabled = true; btn.textContent = "Sending…";
       try {
-        const r = await call({ action: "request", name: d.name, email: d.email, machine: d.machine, note: (/[#&]plan=year/.test(location.hash) ? `Plan: 1 year (${PRICE})` + (d.note ? " — " : "") : "") + d.note, channel: how, website: d.website, price: PRICE });
+        const r = await call({ action: "request", name: d.name, email: d.email, machine: d.machine, note: (/[#&]plan=year/.test(location.hash) ? "After the trial" + (d.note ? " — " : "") : "") + d.note, channel: how, website: d.website, price: PRICE });
         if (!r.ok && /activated AceLens copy|bad request/i.test(r.error || "")) throw new Error("Online requests are being switched on — for now, please email your machine code.");
         if (!r.ok) throw new Error(r.error || "Something went wrong — please try again.");
         $("#gcMsg").innerHTML = `<div class="ok"><b>✅ Request sent!</b><div>Your request number:</div><div class="gc-id">${escT(r.id)}</div><div class="small" style="margin:0">A confirmation is on its way to ${escT(d.email)}. Your activation code will follow by email${PRICE ? "" : " (with payment details first, if needed)"}. Keep the number to check the status here.</div></div>`;
