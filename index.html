@@ -189,6 +189,33 @@
   .step p { margin: 0; color: var(--text2); font-size: 14px; }
   .contact { margin-top: 18px; padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
   .contact strong { color: var(--ball); }
+  nav a.navc { color: var(--ball); font-weight: 650; }
+  .ct { display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; align-items: stretch; }
+  .ct-main { padding: 28px; background: linear-gradient(135deg, rgba(61,242,196,.12), rgba(230,255,63,.06)), var(--s1); border-color: rgba(61,242,196,.3); }
+  .ct-mail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 14px 0 8px; }
+  .ct-addr { font-size: clamp(20px, 3.4vw, 30px); font-weight: 750; color: var(--text); text-decoration: none; word-break: break-all; }
+  .ct-addr:hover { color: var(--mint); }
+  .ct-copy { height: 34px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line2); background: transparent; color: var(--text); font: inherit; font-size: 13.5px; cursor: pointer; }
+  .ct-copy:hover { border-color: var(--mint); }
+  .ct-topics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ct-t { padding: 16px; text-decoration: none; color: var(--text); display: block; transition: border-color .15s, transform .15s; }
+  .ct-t:hover { border-color: rgba(61,242,196,.4); transform: translateY(-2px); }
+  .ct-t b { display: block; margin: 6px 0 2px; font-size: 15px; }
+  .ct-t span { color: var(--text2); font-size: 13px; }
+  .ct-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+  .ct-box { padding: 20px; }
+  .ct-box h3 { margin: 0 0 10px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+  .ct-box ul { margin: 0; padding-left: 18px; color: var(--text2); font-size: 14px; display: grid; gap: 6px; }
+  .ct-box p { margin: 0; color: var(--text2); font-size: 14px; }
+  .ct-code { display: inline-block; font-family: ui-monospace, Consolas, monospace; background: var(--s2); border-radius: 6px; padding: 1px 6px; color: var(--ball); font-size: 13px; }
+  .ct-safe { border-color: rgba(255,138,91,.35); }
+  .ct-help { margin-top: 18px; padding: 20px; }
+  .ct-help h3 { margin: 0 0 10px; font-size: 16px; }
+  .ct-help details { border-top: 1px solid var(--line); padding: 10px 0; }
+  .ct-help summary { cursor: pointer; font-weight: 600; font-size: 14.5px; }
+  .ct-help details p { margin: 8px 0 0; color: var(--text2); font-size: 14px; }
+  @media (max-width: 900px) { .ct, .ct-info { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .ct-topics { grid-template-columns: 1fr; } }
   .faq details { padding: 16px 20px; margin-bottom: 10px; }
   .faq summary { cursor: pointer; font-weight: 600; }
   .faq p { color: var(--text2); margin: 10px 0 0; font-size: 14.5px; }
@@ -213,7 +240,7 @@
     .split.flip > :first-child { order: 0; }
     .grid3, .steps { grid-template-columns: 1fr 1fr; }
     .stats, .h-kpis { grid-template-columns: 1fr 1fr; }
-    nav a:not(.navbtn) { display: none; }
+    nav a:not(.navbtn):not(.navc) { display: none; }
     .outlook { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) { .grid3, .steps { grid-template-columns: 1fr; } .field .hide-s { display: none; } }
@@ -226,7 +253,7 @@
   <div class="wrap">
     <a class="brand" href="#top" aria-label="AceLens home"><img src="logo.svg" alt="" width="32" height="32">AceLens</a>
     <nav>
-      <a href="#field">The field</a><a href="#draw">Draws</a><a href="#weather">Weather</a><a href="#points">Points</a><a href="#history">History</a><a href="#season">Season</a><a href="#different">Why AceLens</a><a href="#faq">FAQ</a>
+      <a href="#field">The field</a><a href="#draw">Draws</a><a href="#weather">Weather</a><a href="#points">Points</a><a href="#history">History</a><a href="#season">Season</a><a href="#different">Why AceLens</a><a href="#faq">FAQ</a><a class="navc" href="#contact">Contact</a>
       <a class="navbtn" href="#buy">Get AceLens</a>
     </nav>
   </div>
@@ -521,6 +548,61 @@
     <details class="card"><summary>Is AceLens part of USTA or UTR?</summary><p>No. AceLens is independent and not affiliated with, endorsed by or sponsored by the USTA, Universal Tennis (UTR), NOAA or the National Weather Service. Always check official sources before entering a tournament.</p></details>
   </div>
 </section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">Contact</span><h2>Talk to <em>AceLens</em></h2><p class="sub">Buying, moving to a new PC, a problem, or an idea — one address for everything. Every email is read and answered personally.</p></div>
+    <div class="ct reveal">
+      <div class="card ct-main">
+        <div class="eyebrow">Email</div>
+        <div class="ct-mail"><a class="ct-addr" href="mailto:acelens.app@gmail.com">acelens.app@gmail.com</a><button class="ct-copy" id="ctcopy" type="button">Copy</button></div>
+        <p class="sub" style="font-size:15px">Include your <b>machine code</b> when it's about a licence — AceLens shows it on the activation screen and in <b>Me → Licence</b>, like <span class="ct-code">7KQ2-M4XD-9PRT-3HWB</span>. For a problem, use <b>Me → Problem report → Email report</b> inside the app: it fills in the details for you.</p>
+        <div class="cta"><a class="btn primary" href="mailto:acelens.app@gmail.com?subject=AceLens%3A%20buying%20a%20licence&body=Hi%21%20I%27d%20like%20to%20buy%20AceLens.%0A%0AMy%20machine%20code%3A%20%0AMy%20name%3A%20">✉ Email to buy</a><a class="btn ghost" href="mailto:acelens.app@gmail.com?subject=AceLens%3A%20a%20problem&body=Hi%21%20Something%20went%20wrong%20in%20AceLens.%0A%0AWhat%20I%20was%20doing%3A%20%0AWhat%20happened%3A%20%0AAceLens%20version%20%28Me%20page%29%3A%20%0AMachine%20code%3A%20">Get help</a></div>
+      </div>
+      <div class="ct-topics">
+        <a class="card ct-t" href="mailto:acelens.app@gmail.com?subject=AceLens%3A%20buying%20a%20licence&body=Hi%21%20I%27d%20like%20to%20buy%20AceLens.%0A%0AMy%20machine%20code%3A%20%0AMy%20name%3A%20"><span class="tag mint">Buy</span><b>Get a licence</b><span>Send your machine code; you'll get payment details, then your activation code.</span></a>
+        <a class="card ct-t" href="mailto:acelens.app@gmail.com?subject=AceLens%3A%20moving%20to%20a%20new%20PC&body=Hi%21%20I%27m%20moving%20AceLens%20to%20a%20new%20PC.%0A%0AOld%20PC%27s%20machine%20code%20%28if%20you%20have%20it%29%3A%20%0ANew%20PC%27s%20machine%20code%3A%20"><span class="tag blue">New PC</span><b>Move your licence</b><span>Send the new PC's machine code and you'll get a code for it.</span></a>
+        <a class="card ct-t" href="mailto:acelens.app@gmail.com?subject=AceLens%3A%20a%20problem&body=Hi%21%20Something%20went%20wrong%20in%20AceLens.%0A%0AWhat%20I%20was%20doing%3A%20%0AWhat%20happened%3A%20%0AAceLens%20version%20%28Me%20page%29%3A%20%0AMachine%20code%3A%20"><span class="tag clay">Help</span><b>Report a problem</b><span>Tell us what you were doing — or use Email report in the app.</span></a>
+        <a class="card ct-t" href="mailto:acelens.app@gmail.com?subject=AceLens%3A%20an%20idea&body=Hi%21%20An%20idea%20for%20AceLens%3A%0A%0A"><span class="tag ball">Ideas</span><b>Suggest a feature</b><span>What would make your tournament week easier?</span></a>
+      </div>
+    </div>
+
+    <div class="ct-info reveal">
+      <div class="card ct-box">
+        <h3>📝 What to include</h3>
+        <ul>
+          <li><b>Buying:</b> your machine code and the name for the licence</li>
+          <li><b>New PC:</b> the new PC's machine code (and the old one if you have it)</li>
+          <li><b>A problem:</b> what you were doing, what happened, your AceLens version (on the Me page) — a screenshot helps</li>
+          <li><b>An idea:</b> what you'd like it to do and when you'd use it</li>
+        </ul>
+      </div>
+      <div class="card ct-box">
+        <h3>🔑 Licence basics</h3>
+        <ul>
+          <li>One licence activates AceLens on one Windows PC</li>
+          <li>Activation is offline: the code is made for your PC's machine code</li>
+          <li>Up to 3 players (brothers and sisters) on the same licence</li>
+          <li>Updates are free and arrive inside the app</li>
+          <li>Windows updates and reinstalls keep your activation</li>
+        </ul>
+      </div>
+      <div class="card ct-box ct-safe">
+        <h3>🛡 Stay safe</h3>
+        <p>AceLens will <b>never</b> ask for your USTA, UTR or email password, or for any sign-in or verification code — not by email, not in the app. Sign-ins happen only inside AceLens on your PC. The only official address is <b>acelens.app@gmail.com</b>, and downloads come only from this site.</p>
+      </div>
+    </div>
+
+    <div class="card ct-help reveal">
+      <h3>Quick help before you write</h3>
+      <details><summary>Windows says "Windows protected your PC"</summary><p>AceLens is new, so Windows SmartScreen hasn't seen it often yet. Click <b>More info</b> → <b>Run anyway</b>. The installer is signed for updates and only comes from this site.</p></details>
+      <details><summary>Where is my machine code?</summary><p>On the activation screen when AceLens first opens, and later in <b>Me → Licence</b>. It contains nothing personal — just a code for this PC.</p></details>
+      <details><summary>AceLens says I'm signed out of USTA or UTR</summary><p>Sign in again from the Upcoming tab (USTA) or any UTR button (UTR). Sign-ins can expire after a few weeks; AceLens only reads with them.</p></details>
+      <details><summary>Some information didn't load</summary><p>AceLens paces its reads to stay gentle, with hourly and daily limits (see the Requests page). If a limit is reached it waits and continues later by itself.</p></details>
+      <details><summary>How do I get the newest version?</summary><p>AceLens checks for updates when it starts and shows a small card when one is ready — one click installs it. You can also download the latest installer here at any time; your data and activation stay.</p></details>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer>
@@ -544,6 +626,13 @@
 
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  $("#ctcopy").onclick = async () => {
+    const b = $("#ctcopy");
+    try { await navigator.clipboard.writeText("acelens.app@gmail.com"); b.textContent = "Copied ✓"; }
+    catch { b.textContent = "Select & copy"; }
+    setTimeout(() => (b.textContent = "Copy"), 2000);
+  };
 
   // ---- reveal on scroll + counters
   const io = new IntersectionObserver((es) => es.forEach((e) => {
