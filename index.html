@@ -216,6 +216,33 @@
   .ct-help details p { margin: 8px 0 0; color: var(--text2); font-size: 14px; }
   @media (max-width: 900px) { .ct, .ct-info { grid-template-columns: 1fr; } }
   @media (max-width: 480px) { .ct-topics { grid-template-columns: 1fr; } }
+  /* get your code */
+  .gc { display: grid; grid-template-columns: 1.4fr .9fr; gap: 14px; margin-top: 18px; }
+  .gc-form { padding: 0; overflow: hidden; }
+  .gc-tabs { display: flex; border-bottom: 1px solid var(--line); }
+  .gc-tab { flex: 1; border: 0; background: transparent; color: var(--text2); padding: 14px; font: inherit; font-weight: 650; cursor: pointer; border-bottom: 2px solid transparent; transition: color .15s, border-color .2s; }
+  .gc-tab.on { color: var(--text); border-bottom-color: var(--mint); background: rgba(61,242,196,.05); }
+  .gc-pane { padding: 18px 20px 20px; display: grid; gap: 12px; }
+  .gc-pane[hidden] { display: none; }
+  .gc-pane label { display: grid; gap: 5px; font-size: 13px; color: var(--text2); }
+  .gc-pane input, .gc-pane textarea { background: var(--s2); border: 1px solid var(--line2); border-radius: 10px; padding: 10px 12px; color: var(--text); font: inherit; font-size: 15px; outline: none; transition: border-color .15s, box-shadow .15s; width: 100%; }
+  .gc-pane input:focus, .gc-pane textarea:focus { border-color: var(--mint); box-shadow: 0 0 0 3px rgba(61,242,196,.15); }
+  .gc-pane input[aria-invalid="true"] { border-color: var(--red); }
+  .mono { font-family: ui-monospace, Consolas, monospace; letter-spacing: .04em; }
+  .gc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .gc-how { display: grid; gap: 6px; font-size: 13px; color: var(--text2); }
+  .gc-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .gc-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .gc-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .gc-msg { font-size: 14px; }
+  .gc-msg .ok { border: 1px solid rgba(61,242,196,.4); background: linear-gradient(135deg, rgba(61,242,196,.12), rgba(230,255,63,.05)); border-radius: 12px; padding: 14px; display: grid; gap: 6px; animation: fadein .4s ease; }
+  .gc-msg .err { color: var(--red); }
+  .gc-id { font-family: ui-monospace, Consolas, monospace; font-size: 22px; font-weight: 800; color: var(--ball); letter-spacing: .08em; }
+  .gc-code { font-family: ui-monospace, Consolas, monospace; background: var(--bg); border: 1px dashed rgba(61,242,196,.5); border-radius: 10px; padding: 10px; word-break: break-all; color: var(--ball); }
+  .gc-side { padding: 20px; }
+  .gc-side h3 { margin: 0 0 10px; font-size: 16px; }
+  .gc-steps { margin: 0; padding-left: 20px; display: grid; gap: 10px; color: var(--text2); font-size: 14px; }
+  @media (max-width: 900px) { .gc, .gc-grid { grid-template-columns: 1fr; } }
   .faq details { padding: 16px 20px; margin-bottom: 10px; }
   .faq summary { cursor: pointer; font-weight: 600; }
   .faq p { color: var(--text2); margin: 10px 0 0; font-size: 14.5px; }
@@ -627,12 +654,54 @@
     <div class="steps reveal">
       <div class="card step"><h3>Download &amp; install</h3><p>Windows may say "Windows protected your PC" because AceLens is new: click <em>More info</em> → <em>Run anyway</em>.</p></div>
       <div class="card step"><h3>Copy your machine code</h3><p>AceLens shows a code for your PC, like <code>7KQ2-M4XD-9PRT-3HWB</code>. It contains nothing personal.</p></div>
-      <div class="card step"><h3>Send it with payment</h3><p>Email your machine code to <a href="mailto:acelens.app@gmail.com">acelens.app@gmail.com</a>; you'll get payment details, then your activation code.</p></div>
+      <div class="card step"><h3>Request your code</h3><p>Fill in the form below with your machine code — or press <em>Get your code on the website</em> in AceLens and it's filled in for you. You'll get payment details if needed, then your code by email.</p></div>
       <div class="card step"><h3>Paste the code</h3><p>AceLens unlocks on that PC. A short setup gets you going; updates are free.</p></div>
+    </div>
+    <div class="gc reveal" id="get-code">
+      <div class="card gc-form">
+        <div class="gc-tabs" role="tablist">
+          <button class="gc-tab on" data-gc="req" role="tab" aria-selected="true">🔑 Get your activation code</button>
+          <button class="gc-tab" data-gc="chk" role="tab" aria-selected="false">🔎 Check my request</button>
+        </div>
+        <form id="gcReq" class="gc-pane" autocomplete="on" novalidate>
+          <div class="gc-grid">
+            <label>Your name<input name="name" required maxlength="80" autocomplete="name" placeholder="Parent's or player's name"></label>
+            <label>Email (your code is sent here)<input name="email" type="email" required maxlength="120" autocomplete="email" placeholder="you@example.com"></label>
+          </div>
+          <label>Machine code (from AceLens's activation screen)<input name="machine" id="gcMachine" required maxlength="80" class="mono" placeholder="7KQ2-M4XD-9PRT-3HWB" spellcheck="false" autocomplete="off"></label>
+          <div class="gc-how"><span>How did you find AceLens?</span>
+            <div class="gc-chips" id="gcHow">
+              <button type="button" class="chip" data-v="Friend or family">Friend or family</button><button type="button" class="chip" data-v="Coach">Coach</button><button type="button" class="chip" data-v="Club">Club</button><button type="button" class="chip" data-v="At a tournament">At a tournament</button><button type="button" class="chip" data-v="Search">Search</button><button type="button" class="chip" data-v="Other">Other</button>
+            </div>
+          </div>
+          <label>Anything to add? (optional)<textarea name="note" rows="2" maxlength="600" placeholder="e.g. moving AceLens to a new PC"></textarea></label>
+          <input type="text" name="website" class="gc-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="gc-row"><button class="btn primary" type="submit" id="gcSend">Send my request</button><span class="small" style="margin:0">Your email is used only to send your code. Nothing else.</span></div>
+          <div class="gc-msg" id="gcMsg" role="status"></div>
+        </form>
+        <form id="gcChk" class="gc-pane" hidden novalidate>
+          <div class="gc-grid">
+            <label>Request number<input name="id" required maxlength="12" class="mono" placeholder="e.g. NQ9ZRX" autocomplete="off"></label>
+            <label>Email you used<input name="email" type="email" required maxlength="120" autocomplete="email"></label>
+          </div>
+          <div class="gc-row"><button class="btn primary" type="submit">Check</button></div>
+          <div class="gc-msg" id="gcChkMsg" role="status"></div>
+        </form>
+      </div>
+      <div class="card gc-side">
+        <h3>What happens next</h3>
+        <ol class="gc-steps">
+          <li><b>We get your request</b> — you'll see a request number and a confirmation email.</li>
+          <li><b>Payment</b> — if needed, we reply with the details.</li>
+          <li><b>Your code arrives by email</b> — paste it in AceLens and press Activate.</li>
+          <li><b>Check any time</b> — "Check my request" shows the status, and your code once it's ready.</li>
+        </ol>
+        <p class="small">Your machine code contains nothing personal — it only identifies the PC so the code works there.</p>
+      </div>
     </div>
     <div class="card contact reveal">
       <div>Price: <strong id="price">contact for price</strong><br><span class="small" style="margin:0">Questions, buying, or moving to a new PC: <a href="mailto:acelens.app@gmail.com">acelens.app@gmail.com</a></span></div>
-      <a class="btn primary" id="mail" href="#">Email to buy</a>
+      <a class="btn ghost" id="mail" href="#">Email instead</a>
     </div>
   </div>
 </section>
@@ -759,6 +828,66 @@
       art.classList.add("hit");
     });
     art.addEventListener("animationend", (e) => { if (e.animationName === "hlbounce") art.classList.remove("hit"); });
+  })();
+
+  // ---- get your code: requests go to AceLens's inbox (Google Apps Script); the code is
+  // made on the owner's PC and emailed. Nothing here is stored in the browser.
+  (function () {
+    const INBOX = "https://script.google.com/macros/s/AKfycbzvOi7xddEQ1ECrXSBmoXx7d9Rv5idyovLTZeQcwBP0VLbN0Iab5a_BrmdRgjEM4cTr/exec";
+    const call = async (body) => {
+      const r = await fetch(INBOX, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) });
+      return r.json();
+    };
+    const escT = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    // tabs
+    $$(".gc-tab").forEach((t) => (t.onclick = () => {
+      $$(".gc-tab").forEach((x) => { x.classList.toggle("on", x === t); x.setAttribute("aria-selected", x === t); });
+      $("#gcReq").hidden = t.dataset.gc !== "req"; $("#gcChk").hidden = t.dataset.gc !== "chk";
+    }));
+    // AceLens opens #get-code&m=MACHINE: fill it in
+    const fill = () => {
+      const m = (location.hash.match(/[#&]m=([0-9A-Za-z-]{8,80})/) || [])[1];
+      if (m) { $("#gcMachine").value = m.toUpperCase(); setTimeout(() => document.getElementById("get-code").scrollIntoView({ behavior: "smooth", block: "start" }), 300); }
+      const id = (location.hash.match(/[#&]id=([0-9A-Za-z]{4,12})/) || [])[1];
+      if (id) { $$(".gc-tab")[1].click(); $("#gcChk").elements.namedItem("id").value = id.toUpperCase(); }
+    };
+    fill(); window.addEventListener("hashchange", fill);
+    let how = "";
+    $$("#gcHow .chip").forEach((c) => (c.onclick = () => { how = how === c.dataset.v ? "" : c.dataset.v; $$("#gcHow .chip").forEach((x) => x.classList.toggle("on", x.dataset.v === how)); }));
+    const f = $("#gcReq");
+    f.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const d = Object.fromEntries(new FormData(f));
+      const bad = [];
+      if (!d.name.trim()) bad.push("name");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email.trim())) bad.push("email");
+      if (d.machine.replace(/[^0-9A-Za-z]/g, "").length < 12) bad.push("machine");
+      ["name", "email", "machine"].forEach((k) => f.elements.namedItem(k).setAttribute("aria-invalid", bad.includes(k)));
+      if (bad.length) { $("#gcMsg").innerHTML = `<span class="err">Please check: ${bad.map((b) => (b === "machine" ? "machine code" : b)).join(", ")}.</span>`; return; }
+      const btn = $("#gcSend"); btn.disabled = true; btn.textContent = "Sending…";
+      try {
+        const r = await call({ action: "request", name: d.name, email: d.email, machine: d.machine, note: d.note, channel: how, website: d.website, price: PRICE });
+        if (!r.ok && /activated AceLens copy|bad request/i.test(r.error || "")) throw new Error("Online requests are being switched on — for now, please email your machine code.");
+        if (!r.ok) throw new Error(r.error || "Something went wrong — please try again.");
+        $("#gcMsg").innerHTML = `<div class="ok"><b>✅ Request sent!</b><div>Your request number:</div><div class="gc-id">${escT(r.id)}</div><div class="small" style="margin:0">A confirmation is on its way to ${escT(d.email)}. Your activation code will follow by email${PRICE ? "" : " (with payment details first, if needed)"}. Keep the number to check the status here.</div></div>`;
+        f.reset(); how = ""; $$("#gcHow .chip").forEach((x) => x.classList.remove("on"));
+      } catch (err) {
+        $("#gcMsg").innerHTML = `<span class="err">${escT(err.message || err)} You can also email <a href="mailto:${CONTACT}">${CONTACT}</a>.</span>`;
+      } finally { btn.disabled = false; btn.textContent = "Send my request"; }
+    });
+    const c = $("#gcChk");
+    c.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const d = Object.fromEntries(new FormData(c));
+      $("#gcChkMsg").textContent = "Checking…";
+      try {
+        const r = await call({ action: "status", id: d.id.trim(), email: d.email.trim() });
+        if (!r.ok) throw new Error(r.error);
+        const label = { pending: "⏳ Received — we'll be in touch soon.", waiting: "✉️ We've replied by email — please check your inbox (and spam).", approved: "✅ Approved — your activation code:", declined: "This request was closed." }[r.status] || r.status;
+        $("#gcChkMsg").innerHTML = `<div class="ok"><b>${label}</b>${r.code ? `<div class="gc-code" id="gcCode">${escT(r.code)}</div><div><button type="button" class="btn ghost" id="gcCopy">Copy code</button></div>` : ""}${r.message && r.status !== "approved" ? `<div class="small" style="margin:0">${escT(r.message)}</div>` : ""}</div>`;
+        if (r.code) $("#gcCopy").onclick = async () => { try { await navigator.clipboard.writeText(r.code); $("#gcCopy").textContent = "Copied ✓"; } catch { $("#gcCopy").textContent = "Select & copy"; } };
+      } catch (err) { $("#gcChkMsg").innerHTML = `<span class="err">${escT(err.message || err)}</span>`; }
+    });
   })();
 
   // ---- reveal on scroll + counters
