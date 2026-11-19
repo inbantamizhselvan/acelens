@@ -270,10 +270,47 @@
     .outlook { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) { .grid3, .steps { grid-template-columns: 1fr; } .field .hide-s { display: none; } }
+
+  /* ===== motion layer: spotlight, tilt cards, stagger, progress, scrollspy, magnetic buttons ===== */
+  .spot { position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(520px circle at var(--sx, 50%) var(--sy, -20%), rgba(61,242,196,.075), transparent 70%); transition: opacity .4s; }
+  .pballs { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  .pball { position: absolute; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #f4ff8a, #3df2c4 60%, #0f8f78); opacity: .16; filter: blur(1px); will-change: transform; }
+  .pball::after { content: ""; position: absolute; inset: 14%; border-radius: 50%; border: 2px solid rgba(255,255,255,.55); border-top-color: transparent; border-bottom-color: transparent; }
+  .progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 40; pointer-events: none; }
+  .progress-bar { height: 100%; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--p, 0)); background: linear-gradient(90deg, var(--mint), var(--ball)); box-shadow: 0 0 12px rgba(61,242,196,.6); }
+  .progress-ball { position: absolute; top: -4px; left: calc(var(--p, 0) * 100% - 5px); width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fbffc4, #e6ff3f 55%, #9fbf00); box-shadow: 0 0 10px rgba(230,255,63,.8); transform: rotate(calc(var(--p, 0) * 1440deg)); }
+  nav a { position: relative; transition: color .2s; }
+  nav a:not(.navbtn)::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--mint), var(--ball)); transform: scaleX(0); transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+  nav a.act { color: var(--text); }
+  nav a.act::after, nav a:not(.navbtn):hover::after { transform: scaleX(1); }
+  h1 em, h2 em { background-image: linear-gradient(90deg, var(--mint), var(--ball), var(--mint)); background-size: 200% auto; animation: shimmer 6s linear infinite; }
+  @keyframes shimmer { to { background-position: 200% center; } }
+  .tilt { position: relative; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.2,.8,.2,1), border-color .2s, box-shadow .3s; }
+  .tilt.moving { transition: transform .1s linear, border-color .2s, box-shadow .3s; }
+  .tilt::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s; background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.08), transparent 45%); }
+  .tilt:hover::after { opacity: 1; }
+  .tilt:hover { border-color: rgba(61,242,196,.35); box-shadow: 0 24px 60px rgba(0,0,0,.35), 0 0 0 1px rgba(61,242,196,.08); }
+  .feat .dot, .ct-box h3, .step::before { transition: transform .5s cubic-bezier(.3,1.6,.4,1); }
+  .feat:hover .dot { transform: translateZ(30px) rotate(-10deg) scale(1.15); }
+  .step:hover::before { transform: rotate(360deg) scale(1.08); transition-duration: .8s; }
+  .stagger.in > * { animation: rise .75s cubic-bezier(.2,.8,.2,1) backwards; animation-delay: calc(var(--i, 0) * 80ms); }
+  @keyframes rise { from { opacity: 0; transform: translateY(26px) scale(.97); } }
+  .tl::before { transform: scaleY(var(--tlp, 0)); transform-origin: top; transition: transform .2s linear; }
+  .tli::before { transition: transform .4s cubic-bezier(.3,1.6,.4,1), box-shadow .4s; transform: scale(.6); }
+  .tli.lit::before { transform: scale(1); box-shadow: 0 0 0 6px rgba(61,242,196,.12), 0 0 18px rgba(230,255,63,.45); }
+  .btn { position: relative; overflow: hidden; will-change: transform; }
+  .btn .rip { position: absolute; border-radius: 50%; transform: scale(0); background: rgba(255,255,255,.45); animation: rip .6s ease-out forwards; pointer-events: none; }
+  @keyframes rip { to { transform: scale(4); opacity: 0; } }
+  .eyebrow { background: linear-gradient(90deg, var(--mint), var(--ball)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stat b { background: linear-gradient(180deg, #fff, #b9ffe9); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  @media (hover: none), (pointer: coarse) { .spot { display: none; } }
 </style>
 </head>
 <body>
 <div class="glow"></div>
+<div class="spot" aria-hidden="true"></div>
+<div class="pballs" aria-hidden="true"><i class="pball" style="width:46px;height:46px;left:6%;top:30%" data-f=".18"></i><i class="pball" style="width:28px;height:28px;left:88%;top:58%" data-f=".32"></i><i class="pball" style="width:70px;height:70px;left:72%;top:110%" data-f=".12"></i><i class="pball" style="width:22px;height:22px;left:16%;top:140%" data-f=".4"></i><i class="pball" style="width:38px;height:38px;left:50%;top:190%" data-f=".22"></i></div>
+<div class="progress" aria-hidden="true"><div class="progress-bar"></div><div class="progress-ball"></div></div>
 
 <header class="top">
   <div class="wrap">
@@ -905,6 +942,88 @@
     setTimeout(tick, 1600 + Math.random() * 1400);
   }
   tick();
+
+  // ===== motion layer =====
+  (function () {
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const root = document.documentElement;
+
+    // staggered reveal for groups of cards
+    $$(".grid3.reveal, .steps.reveal, .stats.reveal, .ct-info.reveal, .ct.reveal, .tl.reveal").forEach((g) => {
+      g.classList.add("stagger");
+      [...g.children].forEach((c, i) => c.style.setProperty("--i", i));
+    });
+    $$(".ct-topics").forEach((g) => [...g.children].forEach((c, i) => c.style.setProperty("--i", i + 1)));
+
+    // cursor spotlight
+    if (fine && !still) {
+      let raf = 0, mx = 0, my = 0;
+      window.addEventListener("pointermove", (e) => {
+        mx = e.clientX; my = e.clientY;
+        if (!raf) raf = requestAnimationFrame(() => { root.style.setProperty("--sx", mx + "px"); root.style.setProperty("--sy", my + "px"); raf = 0; });
+      }, { passive: true });
+    }
+
+    // 3D tilt + sheen on cards (gentle on the interactive demo windows)
+    if (fine && !still) {
+      $$(".win, .feat, .ct-t, .step, .stat, .ct-box, .tli, .ct-main").forEach((el) => {
+        el.classList.add("tilt");
+        const max = el.classList.contains("win") ? 2.5 : el.classList.contains("tli") ? 2 : 8;
+        el.addEventListener("pointermove", (e) => {
+          const r = el.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+          el.classList.add("moving");
+          el.style.setProperty("--mx", x * 100 + "%");
+          el.style.setProperty("--my", y * 100 + "%");
+          el.style.transform = `perspective(900px) rotateY(${(x - 0.5) * max * 2}deg) rotateX(${(0.5 - y) * max * 2}deg) translateY(-3px)`;
+        });
+        el.addEventListener("pointerleave", () => { el.classList.remove("moving"); el.style.transform = ""; });
+      });
+
+      // magnetic buttons
+      $$(".btn, .navbtn").forEach((b) => {
+        b.addEventListener("pointermove", (e) => {
+          const r = b.getBoundingClientRect();
+          b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.18}px, ${(e.clientY - r.top - r.height / 2) * 0.3}px)`;
+        });
+        b.addEventListener("pointerleave", () => (b.style.transform = ""));
+      });
+    }
+
+    // click ripple on buttons
+    if (!still) document.addEventListener("pointerdown", (e) => {
+      const b = e.target.closest(".btn"); if (!b) return;
+      const r = b.getBoundingClientRect(), d = Math.max(r.width, r.height), sp = document.createElement("span");
+      sp.className = "rip"; sp.style.width = sp.style.height = d + "px";
+      sp.style.left = e.clientX - r.left - d / 2 + "px"; sp.style.top = e.clientY - r.top - d / 2 + "px";
+      b.appendChild(sp); setTimeout(() => sp.remove(), 650);
+    });
+
+    // scroll: progress bar, floating balls, timeline drawing, menu highlight
+    const links = $$("nav a[href^='#']:not(.navbtn)");
+    const secs = links.map((a) => document.getElementById(a.getAttribute("href").slice(1))).filter(Boolean);
+    const balls = $$(".pball"), tl = $(".tl"), tlis = $$(".tli");
+    let ticking = false;
+    function onScroll() {
+      ticking = false;
+      const y = window.scrollY, vh = window.innerHeight, max = document.documentElement.scrollHeight - vh;
+      root.style.setProperty("--p", max > 0 ? Math.min(1, y / max).toFixed(4) : 0);
+      if (!still) balls.forEach((b) => (b.style.transform = `translateY(${-y * +b.dataset.f}px) rotate(${y * +b.dataset.f}deg)`));
+      if (tl) {
+        const r = tl.getBoundingClientRect();
+        const prog = Math.max(0, Math.min(1, (vh * 0.7 - r.top) / r.height));
+        tl.style.setProperty("--tlp", still ? 1 : prog.toFixed(3));
+        tlis.forEach((li) => li.classList.toggle("lit", li.getBoundingClientRect().top < vh * 0.7));
+      }
+      let cur = null;
+      secs.forEach((sec) => { if (sec.getBoundingClientRect().top < vh * 0.4) cur = sec; });
+      links.forEach((a) => a.classList.toggle("act", !!cur && a.getAttribute("href") === "#" + cur.id));
+    }
+    window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+    window.addEventListener("resize", onScroll);
+    onScroll();
+  })();
 </script>
 </body>
 </html>
