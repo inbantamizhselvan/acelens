@@ -3,64 +3,190 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AceLens</title>
-<meta name="description" content="AceLens for Windows: your junior tennis tournaments, the whole field in one list, draws, deadlines, a points plan and a UTR forecast.">
+<title>AceLens — junior tennis tournament intelligence</title>
+<meta name="description" content="AceLens for Windows: every USTA junior tournament you follow, the whole field with points, UTR and WTN, projected draws and seeds, match-day draws, weather a month ahead, your ranking points exactly as USTA counts them, and your full match history turned into insights.">
 <link rel="icon" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #03121a; --s1: #0a222c; --s2: #0f2e39; --line: rgba(255,255,255,.09);
-    --text: #f0f8f5; --text2: #b9cfd1; --muted: #87a4a9;
-    --mint: #3df2c4; --ball: #e6ff3f; --clay: #ff8a5b; --ink: #03141b;
+    --bg: #03121a; --s1: #0a222c; --s2: #0f2e39; --s3: #143a47; --line: rgba(255,255,255,.09); --line2: rgba(255,255,255,.16);
+    --text: #f0f8f5; --text2: #b9cfd1; --muted: #87a4a9; --faint: #5f7f86;
+    --mint: #3df2c4; --ball: #e6ff3f; --clay: #ff8a5b; --blue: #6cb4ff; --red: #ff5a6e; --green: #4be58f; --amber: #ffc53d; --ink: #03141b;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--bg); color: var(--text); font-family: Outfit, "Segoe UI", system-ui, sans-serif; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: Outfit, "Segoe UI", system-ui, sans-serif; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
   .glow { position: fixed; inset: 0; z-index: -1; background:
-      radial-gradient(55% 45% at 15% 0%, rgba(61,242,196,.13), transparent 70%),
-      radial-gradient(45% 40% at 90% 8%, rgba(230,255,63,.08), transparent 70%), var(--bg); }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-  header { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; }
-  .brand img { width: 34px; height: 34px; border-radius: 9px; }
-  nav a { color: var(--text2); text-decoration: none; margin-left: 22px; font-size: 14.5px; }
+      radial-gradient(55% 45% at 12% 0%, rgba(61,242,196,.14), transparent 70%),
+      radial-gradient(45% 40% at 92% 6%, rgba(230,255,63,.08), transparent 70%),
+      radial-gradient(60% 50% at 50% 100%, rgba(108,180,255,.06), transparent 70%), var(--bg); }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 700px) { .wrap { padding: 0 24px; } }
+  a { color: var(--mint); }
+  header.top { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: rgba(3,18,26,.72); border-bottom: 1px solid var(--line); }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; color: var(--text); text-decoration: none; }
+  .brand svg { width: 32px; height: 32px; }
+  .brand:hover .seam { stroke-dashoffset: 0; }
+  nav a { color: var(--text2); text-decoration: none; margin-left: 18px; font-size: 14px; }
   nav a:hover { color: var(--mint); }
-  .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; padding: 56px 0 64px; }
-  .eyebrow { color: var(--mint); text-transform: uppercase; letter-spacing: .1em; font-size: 12.5px; font-weight: 700; }
-  h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.05; margin: 12px 0 18px; letter-spacing: -.01em; }
-  h1 em { font-style: normal; background: linear-gradient(90deg, var(--mint), var(--ball)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .lead { color: var(--text2); font-size: 18px; max-width: 560px; }
-  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
-  .btn { display: inline-flex; align-items: center; gap: 10px; border-radius: 12px; padding: 13px 20px; font-weight: 650; font-size: 15.5px; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
+  .navbtn { margin-left: 18px; background: var(--mint); color: var(--ink) !important; padding: 7px 14px; border-radius: 10px; font-weight: 650; }
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 44px; align-items: center; padding: 60px 0 40px; }
+  .eyebrow { color: var(--mint); text-transform: uppercase; letter-spacing: .12em; font-size: 12px; font-weight: 700; }
+  h1 { font-size: clamp(34px, 5.2vw, 60px); line-height: 1.03; margin: 12px 0 18px; letter-spacing: -.015em; }
+  h1 em, h2 em { font-style: normal; background: linear-gradient(90deg, var(--mint), var(--ball)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { color: var(--text2); font-size: 18px; max-width: 560px; margin: 0; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; border-radius: 12px; padding: 13px 20px; font-weight: 650; font-size: 15.5px; text-decoration: none; border: 0; cursor: pointer; font-family: inherit; transition: transform .15s ease, box-shadow .15s ease, border-color .15s; }
   .btn.primary { background: var(--mint); color: var(--ink); box-shadow: 0 8px 30px rgba(61,242,196,.25); }
   .btn.primary:hover { transform: translateY(-1px); box-shadow: 0 12px 36px rgba(61,242,196,.35); }
-  .btn.ghost { border: 1px solid var(--line); color: var(--text); }
+  .btn.ghost { border: 1px solid var(--line2); color: var(--text); background: transparent; }
   .btn.ghost:hover { border-color: var(--mint); }
   .small { color: var(--muted); font-size: 13px; margin-top: 12px; }
   .card { background: var(--s1); border: 1px solid var(--line); border-radius: 18px; }
-  .mock { padding: 18px; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
-  .mock .bar { color: var(--mint); font-weight: 650; font-size: 15px; margin-bottom: 12px; }
-  .row { display: grid; grid-template-columns: 26px 1fr 54px 54px 46px; gap: 8px; align-items: center; padding: 9px 10px; border-radius: 10px; font-size: 13.5px; }
-  .row.head { color: var(--muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; }
-  .row.me { background: rgba(61,242,196,.1); outline: 1px solid rgba(61,242,196,.35); }
-  .row .n { text-align: right; font-variant-numeric: tabular-nums; }
-  .you { background: var(--mint); color: var(--ink); border-radius: 6px; padding: 0 6px; font-size: 11px; font-weight: 700; margin-left: 6px; }
-  .hot { color: var(--clay); } .cool { color: #4be58f; }
-  section { padding: 56px 0; }
-  h2 { font-size: 30px; margin: 0 0 8px; }
-  .sub { color: var(--text2); margin: 0 0 28px; }
-  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .feat { padding: 22px; }
-  .feat h3 { margin: 10px 0 6px; font-size: 17px; }
-  .feat p { margin: 0; color: var(--text2); font-size: 14.5px; }
-  .dot { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: rgba(61,242,196,.12); color: var(--mint); font-size: 18px; }
-  .steps { counter-reset: s; display: grid; gap: 14px; }
-  .step { display: grid; grid-template-columns: 44px 1fr; gap: 14px; padding: 18px 20px; }
-  .step::before { counter-increment: s; content: counter(s); width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--mint), var(--ball)); color: var(--ink); font-weight: 800; }
-  .step h3 { margin: 0 0 4px; font-size: 16.5px; }
-  .step p { margin: 0; color: var(--text2); font-size: 14.5px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 11px; border-radius: 999px; border: 1px solid var(--line2); background: transparent; color: var(--text2); font: inherit; font-size: 12.5px; cursor: pointer; transition: all .15s; }
+  .chip.on { background: rgba(61,242,196,.14); border-color: rgba(61,242,196,.5); color: var(--text); }
+  .chip:hover { color: var(--text); }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+  .tag.mint { background: rgba(61,242,196,.14); color: var(--mint); }
+  .tag.ball { background: rgba(230,255,63,.14); color: var(--ball); }
+  .tag.clay { background: rgba(255,138,91,.15); color: var(--clay); }
+  .tag.blue { background: rgba(108,180,255,.15); color: var(--blue); }
+  section { padding: 64px 0; }
+  .sec-head { display: grid; gap: 6px; margin-bottom: 26px; }
+  h2 { font-size: clamp(26px, 3.4vw, 36px); margin: 0; letter-spacing: -.01em; line-height: 1.12; }
+  .sub { color: var(--text2); margin: 0; max-width: 720px; font-size: 16.5px; }
+  .num { font-variant-numeric: tabular-nums; }
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* stats strip */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 8px 0 0; }
+  .stat { padding: 18px; }
+  .stat b { display: block; font-size: 28px; letter-spacing: -.01em; }
+  .stat span { color: var(--muted); font-size: 13px; }
+
+  /* demo window chrome */
+  .win { overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+  .win-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.02); font-size: 13px; color: var(--muted); }
+  .win-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--s3); display: inline-block; }
+  .win-body { padding: 16px; }
+
+  /* field table */
+  .ftools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 10px; }
+  .ftools .lbl { color: var(--muted); font-size: 12px; margin-right: 4px; }
+  .field { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .field th { text-align: left; font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; padding: 6px 8px; border-bottom: 1px solid var(--line2); }
+  .field td { padding: 7px 8px; border-bottom: 1px solid var(--line); }
+  .field tr { transition: background .15s; cursor: pointer; }
+  .field tbody tr:hover { background: rgba(255,255,255,.03); }
+  .field tr.me td { background: rgba(61,242,196,.09); }
+  .field tr.cut td { border-bottom: 2px dashed var(--clay); }
+  .field .r { text-align: right; }
+  .flight { font-size: 10.5px; font-weight: 700; color: var(--blue); }
+  .seed { color: var(--ball); font-weight: 700; font-size: 11px; margin-right: 4px; }
+  .scout { margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: var(--s2); border: 1px solid var(--line); font-size: 13.5px; min-height: 64px; color: var(--text2); }
+  .scout b { color: var(--text); }
+
+  /* features split rows */
+  .split { display: grid; grid-template-columns: .9fr 1.1fr; gap: 40px; align-items: center; margin-bottom: 70px; }
+  .split.flip { grid-template-columns: 1.1fr .9fr; }
+  .split.flip > :first-child { order: 2; }
+  .split h3 { font-size: 26px; margin: 8px 0 10px; line-height: 1.15; }
+  .split p { color: var(--text2); margin: 0 0 12px; }
+  .ticks { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 8px; }
+  .ticks li { padding-left: 26px; position: relative; color: var(--text2); font-size: 15px; }
+  .ticks li::before { content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--ball), #9fbf00); box-shadow: 0 0 0 3px rgba(230,255,63,.12); }
+
+  /* bracket */
+  .bracket { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px; }
+  .bcol { display: flex; flex-direction: column; justify-content: space-around; gap: 8px; min-width: 150px; }
+  .bcol h5 { margin: 0 0 4px; font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .bm { border: 1px solid var(--line2); border-radius: 9px; overflow: hidden; background: var(--s2); }
+  .bl { display: flex; align-items: center; gap: 6px; padding: 5px 8px; font-size: 12.5px; cursor: pointer; border: 0; width: 100%; background: transparent; color: var(--text); font-family: inherit; text-align: left; }
+  .bl + .bl { border-top: 1px solid var(--line); }
+  .bl:hover { background: rgba(255,255,255,.04); }
+  .bl.win { font-weight: 700; color: var(--mint); }
+  .bl.lose { opacity: .45; text-decoration: line-through; }
+  .bl.me { box-shadow: inset 3px 0 0 var(--mint); }
+  .bl.tbd { color: var(--faint); cursor: default; }
+  .bl .sd { color: var(--ball); font-size: 10.5px; font-weight: 700; }
+
+  /* weather */
+  .wx-days { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .wx-panel { display: grid; grid-template-columns: 1fr 210px; gap: 14px; }
+  .wx-detail { background: var(--s2); border-radius: 12px; padding: 12px 14px; font-size: 13px; color: var(--text2); }
+  .wx-detail .big { font-size: 34px; font-weight: 750; color: var(--text); line-height: 1; }
+  .wx-detail .play { float: right; font-weight: 800; color: var(--ink); background: var(--mint); border-radius: 8px; padding: 3px 8px; font-size: 13px; }
+  svg text { font-family: Outfit, sans-serif; }
+  .wx-svg { width: 100%; height: auto; touch-action: none; cursor: ew-resize; }
+  .outlook { margin-top: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .od { background: var(--s2); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: var(--text2); }
+  .od b { display: block; font-size: 20px; color: var(--text); }
+
+  /* points calculator */
+  .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .calc h4 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .res { display: grid; grid-template-columns: 1fr 80px 70px; gap: 6px; align-items: center; font-size: 13px; padding: 4px 0; }
+  .res input { width: 100%; background: var(--s2); border: 1px solid var(--line2); border-radius: 8px; color: var(--text); padding: 5px 7px; font: inherit; font-size: 13px; text-align: right; }
+  .res input:focus { outline: none; border-color: var(--mint); }
+  .res.out { opacity: .45; }
+  .res .c { text-align: right; font-size: 11.5px; }
+  .formula { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 14px; padding: 16px; margin-top: 14px; border-radius: 14px; background: var(--s2); }
+  .formula .v { font-size: 26px; font-weight: 750; }
+  .formula .l { display: block; font-size: 11.5px; color: var(--muted); }
+  .formula .op { font-size: 22px; color: var(--muted); }
+  .formula .tot .v { color: var(--mint); font-size: 30px; }
+  .bonus-t { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+  .bonus-t td { padding: 4px 6px; border-bottom: 1px solid var(--line); }
+
+  /* history */
+  .h-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  .h-kpi { background: var(--s2); border-radius: 12px; padding: 10px 12px; }
+  .h-kpi b { display: block; font-size: 22px; }
+  .h-kpi span { font-size: 11.5px; color: var(--muted); }
+  .ins { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
+  .ins li { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; color: var(--text2); }
+  .ins li i { flex: none; width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center; font-style: normal; font-size: 13px; background: rgba(61,242,196,.12); }
+  .funnel { display: grid; gap: 6px; margin-top: 10px; }
+  .fr { display: grid; grid-template-columns: 54px 1fr 64px; gap: 8px; align-items: center; font-size: 12.5px; }
+  .fbar { height: 10px; border-radius: 6px; background: var(--s3); overflow: hidden; }
+  .fbar > span { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--mint), var(--ball)); transition: width .8s ease; }
+  .fr.stall .fbar > span { background: linear-gradient(90deg, var(--clay), var(--amber)); }
+
+  /* timeline */
+  .tl { position: relative; display: grid; gap: 16px; padding-left: 34px; }
+  .tl::before { content: ""; position: absolute; left: 13px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--mint), var(--ball), var(--clay)); border-radius: 2px; }
+  .tli { position: relative; padding: 14px 16px; }
+  .tli::before { content: attr(data-n); position: absolute; left: -34px; top: 14px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 12.5px; color: var(--ink); background: linear-gradient(135deg, var(--mint), var(--ball)); }
+  .tli h4 { margin: 0 0 4px; font-size: 16px; }
+  .tli p { margin: 0; color: var(--text2); font-size: 14.5px; }
+  .tli .when { font-size: 11.5px; color: var(--mint); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+
+  /* gentle reads meter */
+  .meter { height: 12px; border-radius: 8px; background: var(--s3); overflow: hidden; margin: 8px 0 4px; }
+  .meter > span { display: block; height: 100%; background: linear-gradient(90deg, var(--mint), var(--ball)); border-radius: 8px; transition: width .4s ease; }
+  .reqlog { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: var(--text2); height: 132px; overflow: hidden; display: flex; flex-direction: column-reverse; gap: 2px; margin-top: 10px; }
+  .reqlog div { animation: fadein .4s ease; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; } }
+
+  /* features grid */
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .feat { padding: 20px; transition: transform .2s, border-color .2s; }
+  .feat:hover { transform: translateY(-3px); border-color: rgba(61,242,196,.35); }
+  .feat h3 { margin: 10px 0 6px; font-size: 16.5px; }
+  .feat p { margin: 0; color: var(--text2); font-size: 14px; }
+  .dot { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: rgba(61,242,196,.12); font-size: 19px; }
+
+  /* buy */
+  .steps { counter-reset: s; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .step { padding: 18px; }
+  .step::before { counter-increment: s; content: counter(s); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--mint), var(--ball)); color: var(--ink); font-weight: 800; margin-bottom: 10px; }
+  .step h3 { margin: 0 0 4px; font-size: 16px; }
+  .step p { margin: 0; color: var(--text2); font-size: 14px; }
   .contact { margin-top: 18px; padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
   .contact strong { color: var(--ball); }
   .faq details { padding: 16px 20px; margin-bottom: 10px; }
@@ -68,72 +194,313 @@
   .faq p { color: var(--text2); margin: 10px 0 0; font-size: 14.5px; }
   footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: 13px; }
   footer a { color: var(--text2); }
-  @media (max-width: 860px) {
-    .hero { grid-template-columns: 1fr; padding-top: 24px; }
-    .grid3 { grid-template-columns: 1fr; }
-    nav { display: none; }
+
+  /* hero logo animation */
+  .brand img { width: 32px; height: 32px; border-radius: 8px; transition: transform .4s ease; }
+  .brand:hover img { transform: rotate(-12deg) scale(1.06); }
+  .hero-art { position: relative; width: min(100%, 440px); margin: 0 auto; aspect-ratio: 1; }
+  .hero-ring { position: absolute; inset: -6%; width: 112%; height: 112%; }
+  .hero-logo { position: relative; width: 78%; margin: 11%; display: block; border-radius: 22%; filter: drop-shadow(0 30px 60px rgba(61,242,196,.22)); }
+  .spin { transform-origin: 512px 512px; animation: spin 18s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .float { animation: float 6s ease-in-out infinite; }
+  @keyframes float { 50% { transform: translateY(-10px); } }
+  .seam { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: draw 2.4s .4s ease forwards; transition: stroke-dashoffset .6s; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  @media (max-width: 900px) {
+    .hero, .split, .split.flip, .calc, .wx-panel { grid-template-columns: 1fr; }
+    .split.flip > :first-child { order: 0; }
+    .grid3, .steps { grid-template-columns: 1fr 1fr; }
+    .stats, .h-kpis { grid-template-columns: 1fr 1fr; }
+    nav a:not(.navbtn) { display: none; }
+    .outlook { grid-template-columns: 1fr; }
   }
+  @media (max-width: 560px) { .grid3, .steps { grid-template-columns: 1fr; } .field .hide-s { display: none; } }
 </style>
 </head>
 <body>
 <div class="glow"></div>
-<div class="wrap">
-  <header>
-    <div class="brand"><img src="icon.png" alt="">AceLens</div>
-    <nav><a href="#features">Features</a><a href="#buy">How to buy</a><a href="#faq">FAQ</a></nav>
-  </header>
 
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="AceLens home"><img src="logo.svg" alt="" width="32" height="32">AceLens</a>
+    <nav>
+      <a href="#field">The field</a><a href="#draw">Draws</a><a href="#weather">Weather</a><a href="#points">Points</a><a href="#history">History</a><a href="#season">Season</a><a href="#different">Why AceLens</a><a href="#faq">FAQ</a>
+      <a class="navbtn" href="#buy">Get AceLens</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
   <div class="hero">
     <div>
-      <div class="eyebrow">For junior tennis families · Windows</div>
-      <h1>Every tournament, <em>the whole field</em>, one screen.</h1>
-      <p class="lead">AceLens brings your USTA junior tournaments together: every player's national points, seeding rank, UTR and WTN in one list, where you'd place and which flight you're in, the draw, entry deadlines, a points plan and where your UTR is heading.</p>
+      <div class="eyebrow">Junior tennis tournament intelligence · Windows</div>
+      <h1>Know the field, the draw and <em>your path</em> — before you play.</h1>
+      <p class="lead">AceLens turns USTA tournaments into one clear picture: every player's points, UTR and WTN, where you'd place and be seeded, the projected and real draw, the weather at the courts, your ranking points exactly as USTA counts them, and your whole match history as insights.</p>
       <div class="cta">
         <a class="btn primary" href="https://github.com/inbantamizhselvan/acelens/releases/latest/download/AceLens-Setup.exe">⬇ Download for Windows</a>
-        <a class="btn ghost" href="#buy">How to buy</a>
+        <a class="btn ghost" href="#tour">Take the tour ↓</a>
       </div>
-      <div class="small">Windows 10 or 11 · 64-bit · about 3 MB · needs an activation code to run</div>
+      <div class="small">Windows 10 or 11 · 64-bit · free updates inside the app · needs an activation code</div>
     </div>
-    <div class="card mock" aria-hidden="true">
-      <div class="bar">Sam is #4 of 44 by points — likely seed 4, in Flight 1.</div>
-      <div class="row head"><span>#</span><span>Player</span><span class="n">Pts</span><span class="n">UTR</span><span class="n">WTN</span></div>
-      <div class="row"><span>1</span><span>Leo Park</span><span class="n">2,531</span><span class="n hot">9.12</span><span class="n hot">19.2</span></div>
-      <div class="row"><span>2</span><span>Ethan Cole</span><span class="n">2,444</span><span class="n hot">9.49</span><span class="n hot">17.7</span></div>
-      <div class="row"><span>3</span><span>Ravi Shah</span><span class="n">1,966</span><span class="n hot">8.76</span><span class="n hot">22.2</span></div>
-      <div class="row me"><span>4</span><span>Sam Rivera<span class="you">You</span></span><span class="n">1,939</span><span class="n">8.56</span><span class="n">23.3</span></div>
-      <div class="row"><span>5</span><span>Noah Kim</span><span class="n">1,903</span><span class="n cool">8.47</span><span class="n cool">23.8</span></div>
-      <div class="row"><span>6</span><span>Max Brooks</span><span class="n">1,482</span><span class="n cool">8.16</span><span class="n cool">26.2</span></div>
+    <div class="hero-art">
+      <svg class="hero-ring" viewBox="0 0 1024 1024" aria-hidden="true"><defs><linearGradient id="ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3df2c4" stop-opacity=".9"/><stop offset="1" stop-color="#e6ff3f" stop-opacity=".15"/></linearGradient></defs><g class="spin"><circle cx="512" cy="512" r="490" fill="none" stroke="url(#ring)" stroke-width="3" stroke-dasharray="6 18"/></g></svg>
+      <img class="hero-logo float" src="logo.svg" alt="AceLens logo">
     </div>
+  </div>
+
+  <div class="stats reveal">
+    <div class="card stat"><b class="num" data-count="44">0</b><span>players' points, UTR &amp; WTN in one list</span></div>
+    <div class="card stat"><b class="num" data-count="30">0</b><span>days of weather — forecast, then long-range</span></div>
+    <div class="card stat"><b class="num" data-count="6">0</b><span>best results that make your ranking, shown exactly</span></div>
+    <div class="card stat"><b class="num" data-count="0">0</b><span>bytes of your data sent anywhere — it stays on your PC</span></div>
   </div>
 </div>
 
+<section id="tour">
+  <div class="wrap">
+    <!-- the field -->
+    <div class="split reveal" id="field">
+      <div>
+        <span class="tag mint">The whole field</span>
+        <h3>Every player, one list — and where you stand.</h3>
+        <p>AceLens reads a tournament's entry list and fills in each player's national points and rank, seeding points, UTR and WTN — one by one as they arrive. You see your place, which flight you're in, who's likely seeded and where the cut line falls.</p>
+        <ul class="ticks">
+          <li>Sort by points, UTR or WTN; filter to your flight</li>
+          <li>Click any player to scout them: your head-to-head and every past meeting with scores</li>
+          <li>Reads run quietly in the background while you use the rest of the app</li>
+        </ul>
+      </div>
+      <div class="card win">
+        <div class="win-bar"><i></i><i></i><i></i>&nbsp;L4 Open · Boys 12s · Players</div>
+        <div class="win-body">
+          <div class="ftools">
+            <span class="lbl">Sort</span>
+            <button class="chip on" data-sort="pts">Points</button><button class="chip" data-sort="utr">UTR</button><button class="chip" data-sort="wtn">WTN</button>
+            <span class="lbl" style="margin-left:10px">Show</span>
+            <button class="chip on" data-fl="all">All</button><button class="chip" data-fl="F1">Flight 1</button>
+          </div>
+          <table class="field">
+            <thead><tr><th>#</th><th>Player</th><th class="r">Pts</th><th class="r">UTR</th><th class="r hide-s">WTN</th><th class="hide-s">H2H</th></tr></thead>
+            <tbody id="fbody"></tbody>
+          </table>
+          <div class="scout" id="scout">Click a player to scout them.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- draw -->
+    <div class="split flip reveal" id="draw">
+      <div>
+        <span class="tag ball">Seeds &amp; draws</span>
+        <h3>Your projected seed and draw — then the real one on match day.</h3>
+        <p>Before USTA posts the draw, AceLens projects it the way USTA seeds (by the Singles Seeding List): seeds, byes and your likely path. On tournament days it reads the real draw by itself and keeps your bracket live.</p>
+        <ul class="ticks">
+          <li>Click a player to mark who won — later rounds follow (try it →)</li>
+          <li>Build or fix a draw by hand from your flight's player list</li>
+          <li>Your match time and next opponent, ready for the morning email</li>
+        </ul>
+      </div>
+      <div class="card win">
+        <div class="win-bar"><i></i><i></i><i></i>&nbsp;Draw · Flight 1 · 8-draw</div>
+        <div class="win-body"><div class="bracket" id="bracket"></div><div class="small" id="bnote">Click players to play the draw out.</div></div>
+      </div>
+    </div>
+
+    <!-- weather -->
+    <div class="split reveal" id="weather">
+      <div>
+        <span class="tag blue">Weather at the courts</span>
+        <h3>Hour by hour on match day, and a prediction a month out.</h3>
+        <p>Within a week, the US National Weather Service forecast at the venue, hour by hour, with a playability score, the best window to play and what it means on court. Further out, a long-range prediction from 30 years of that date at the venue, nudged by NOAA's outlook for this year.</p>
+        <ul class="ticks">
+          <li>Drag across the chart for any hour's details</li>
+          <li>A packing list that follows the forecast</li>
+          <li>An email on tournament mornings with all of it (optional)</li>
+        </ul>
+      </div>
+      <div class="card win">
+        <div class="win-bar"><i></i><i></i><i></i>&nbsp;Weather · Sat</div>
+        <div class="win-body">
+          <div class="wx-panel">
+            <svg class="wx-svg" id="wx" viewBox="0 0 560 220" role="img" aria-label="Hourly temperature, rain chance and playability"></svg>
+            <div class="wx-detail" id="wxd"></div>
+          </div>
+          <div class="outlook">
+            <div class="od"><span class="tag mint">Long-range</span><b>54° / 35°</b>Predicted · 4 weeks out</div>
+            <div class="od"><span class="tag clay">NOAA lean</span><b>Warmer</b>50% chance · 8–14 day</div>
+            <div class="od"><span class="tag blue">Rain</span><b>33%</b>in 30 years on this date</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- points -->
+    <div class="split flip reveal" id="points">
+      <div>
+        <span class="tag clay">Ranking points, explained</span>
+        <h3>See exactly which results make your ranking.</h3>
+        <p>USTA's Combined Standings use your <b>best 6 singles</b> results (each with its bonus points for beating top-500 players) plus <b>15% of your best 6 doubles</b>, over the last 52 weeks. AceLens shows yours exactly as USTA counts them — and when each one drops off.</p>
+        <ul class="ticks">
+          <li>Change a result in the calculator → watch which ones count</li>
+          <li>"The one to beat": the lowest counted result a new one must top</li>
+          <li>Weekly refresh, the day after USTA updates</li>
+        </ul>
+      </div>
+      <div class="card win">
+        <div class="win-bar"><i></i><i></i><i></i>&nbsp;Planner · Ranking points</div>
+        <div class="win-body">
+          <div class="calc">
+            <div><h4>Singles results (points + bonus)</h4><div id="sres"></div></div>
+            <div><h4>Doubles results</h4><div id="dres"></div>
+              <h4 style="margin-top:12px">Bonus for beating…</h4>
+              <table class="bonus-t"><tr><td>Top 10</td><td class="num">225</td><td>#11–25</td><td class="num">203</td></tr><tr><td>#26–50</td><td class="num">169</td><td>#51–100</td><td class="num">135/101</td></tr><tr><td>#101–250</td><td class="num">68/45</td><td>#251–500</td><td class="num">23/11</td></tr></table>
+            </div>
+          </div>
+          <div class="formula" id="formula"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- history -->
+    <div class="split reveal" id="history">
+      <div>
+        <span class="tag mint">History &amp; trends</span>
+        <h3>Every match you've played, turned into answers.</h3>
+        <p>One click imports your whole USTA record — every tournament, round and score, all years — and turns it into trends: form over time, where you stall, how you do in third sets, after a week off, against rivals, by level and by season.</p>
+        <ul class="ticks">
+          <li>Filters for singles/doubles, year and level update everything</li>
+          <li>Head-to-head appears automatically when you meet someone again</li>
+          <li>Plain-English insights with the sample size behind each one</li>
+        </ul>
+      </div>
+      <div class="card win">
+        <div class="win-bar"><i></i><i></i><i></i>&nbsp;History &amp; trends</div>
+        <div class="win-body">
+          <div class="ftools"><button class="chip on" data-yr="all">All years</button><button class="chip" data-yr="2026">2026</button><button class="chip" data-yr="2025">2025</button></div>
+          <div class="h-kpis" id="hk"></div>
+          <svg id="form" viewBox="0 0 560 150" style="width:100%;height:auto" role="img" aria-label="Rolling win percentage"></svg>
+          <div class="funnel" id="funnel"></div>
+          <ul class="ins" id="hins"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- season & opponents -->
+    <div class="split flip reveal" id="season">
+      <div>
+        <span class="tag ball">Season &amp; opponents</span>
+        <h3>Your season at a glance, and a book on every opponent.</h3>
+        <p>The Season review counts every match from your USTA history, UTR and the draws you track — no double counting. The Opponents book keeps everyone you've played: rivals, the ones who have your number, the ones you always beat, with every meeting and score.</p>
+        <ul class="ticks">
+          <li>Record by month and level; titles and finals in the trophy cabinet</li>
+          <li>Rivals (3+ meetings), toughest opponents, best record against</li>
+          <li>Doubles too — who you've played against and who you've partnered</li>
+        </ul>
+      </div>
+      <div class="card win">
+        <div class="win-bar"><i></i><i></i><i></i>&nbsp;Season 2026 · Opponents</div>
+        <div class="win-body">
+          <div class="h-kpis" id="sk"></div>
+          <svg id="months" viewBox="0 0 560 120" style="width:100%;height:auto" role="img" aria-label="Wins and losses by month"></svg>
+          <div class="ftools" style="margin-top:8px"><button class="chip on" data-op="rivals">Rivals</button><button class="chip" data-op="tough">Toughest</button><button class="chip" data-op="best">Best against</button></div>
+          <div id="opps"></div>
+          <div class="scout" id="opd">Click an opponent for every meeting.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- what makes it different -->
+<section id="different">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">Only in AceLens</span><h2>What makes it <em>different</em></h2><p class="sub">Things you can't get from USTA's or UTR's own sites — because AceLens puts them together.</p></div>
+    <div class="grid3 reveal">
+      <div class="card feat"><div class="dot">🧮</div><h3>Your ranking, itemised</h3><p>The exact best-6 singles and doubles behind your Combined points, with bonus, the result to beat and when each one drops off.</p></div>
+      <div class="card feat"><div class="dot">🌱</div><h3>Seeds before the draw</h3><p>Projected seed and bracket the way USTA seeds — by the Singles Seeding List — with flights split by Combined points.</p></div>
+      <div class="card feat"><div class="dot">⚡</div><h3>The field, one by one</h3><p>Points, seeding points, WTN and UTR fill in live as they're found — national standings and UTR read side by side.</p></div>
+      <div class="card feat"><div class="dot">🤝</div><h3>Head-to-head everywhere</h3><p>Open any tournament and everyone you've met shows your record and every past score — singles and doubles.</p></div>
+      <div class="card feat"><div class="dot">📬</div><h3>It comes to you</h3><p>New sign-ups added weekly, withdrawals noticed, the real draw read on match day, the morning email sent while AceLens is closed.</p></div>
+      <div class="card feat"><div class="dot">🔭</div><h3>Weather a month out</h3><p>30 years of that date at the venue, nudged by NOAA's outlook, then the hour-by-hour forecast takes over.</p></div>
+      <div class="card feat"><div class="dot">📊</div><h3>Patterns you'd miss</h3><p>First-set → match, comebacks, third sets, rest vs back-to-back weekends, where you stall by round, seasonality.</p></div>
+      <div class="card feat"><div class="dot">🛡</div><h3>Private &amp; polite</h3><p>Everything on your PC; reads paced like a person and shared across copies on your Wi-Fi; every request visible.</p></div>
+      <div class="card feat"><div class="dot">🎾</div><h3>Made by a tennis parent</h3><p>Built around a real junior season — the questions you actually ask the week before a tournament.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- a tournament week -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">How it fits your week</span><h2>A tournament week with <em>AceLens</em></h2><p class="sub">Most of it happens by itself once you've signed in to USTA and UTR in the app.</p></div>
+    <div class="tl reveal">
+      <div class="card tli" data-n="1"><div class="when">Weekly</div><h4>Your sign-ups appear on their own</h4><p>AceLens checks the tournaments you've registered for on USTA and adds them — field, details and all. If you've withdrawn, it notices.</p></div>
+      <div class="card tli" data-n="2"><div class="when">Entries close</div><h4>Deadlines, calendar and reminders</h4><p>Every entry deadline with reminders; one click puts a tournament and its deadline in your calendar.</p></div>
+      <div class="card tli" data-n="3"><div class="when">The week before</div><h4>Read the field, see your seed and flight</h4><p>Points, UTR and WTN for every player fill in one by one; your projected seed and draw appear; scout who you could meet.</p></div>
+      <div class="card tli" data-n="4"><div class="when">Two days out</div><h4>The real draw, read for you</h4><p>With your USTA sign-in, AceLens reads the draw by itself every couple of hours and replaces the projection.</p></div>
+      <div class="card tli" data-n="5"><div class="when">Match morning</div><h4>An email with everything</h4><p>Weather at the courts hour by hour, what to pack, the venue map link and your first match — even if AceLens is closed.</p></div>
+      <div class="card tli" data-n="6"><div class="when">After</div><h4>Results, points and trends update</h4><p>Your history, ranking points and insights refresh weekly. Memories keep the photos and the story.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- gentle -->
+<section>
+  <div class="wrap">
+    <div class="split reveal">
+      <div>
+        <span class="tag ball">Private &amp; gentle</span>
+        <h3>Your data stays on your PC. Reads are paced like a person.</h3>
+        <p>AceLens reads public tournament pages directly from your computer — no AceLens server sees your data. Every page is paced with random gaps, breaks and hourly/daily limits, shared across AceLens copies on your home network, so your connection is never flagged.</p>
+        <ul class="ticks">
+          <li>Every request is logged and visible in the app</li>
+          <li>Sign-ins stay inside AceLens on your PC; it only reads</li>
+          <li>Kept results are reused — a week's UTRs, standings and history cost nothing to show again</li>
+        </ul>
+      </div>
+      <div class="card win">
+        <div class="win-bar"><i></i><i></i><i></i>&nbsp;Requests</div>
+        <div class="win-body">
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span>This hour</span><span class="num" id="mh">0 / 60</span></div>
+          <div class="meter"><span id="mbar" style="width:0%"></span></div>
+          <div class="reqlog" id="rlog"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- everything -->
 <section id="features">
   <div class="wrap">
-    <h2>Built for the weekend before the tournament</h2>
-    <p class="sub">Everything you'd otherwise piece together from five browser tabs.</p>
-    <div class="grid3">
-      <div class="card feat"><div class="dot">👥</div><h3>The whole field, one list</h3><p>National points and ranks, seeding list, UTR, WTN and your head-to-head for every player, with the cut line and flights marked. Click anyone to scout them.</p></div>
-      <div class="card feat"><div class="dot">🗂</div><h3>Draw &amp; your road</h3><p>Read the draw once through a private, read-only sign-in that's erased right after. See who you could meet each round, and record results as you go.</p></div>
-      <div class="card feat"><div class="dot">📈</div><h3>UTR forecast</h3><p>Where your rating is heading after each tournament, worked out from your matches and your opponents.</p></div>
-      <div class="card feat"><div class="dot">🎯</div><h3>Points planner</h3><p>Which tournaments to enter, using USTA's point tables and your place in each field, with your best-6 and calendar in mind.</p></div>
-      <div class="card feat"><div class="dot">⏰</div><h3>Deadlines &amp; reminders</h3><p>Every entry deadline you follow, with reminders and a calendar file so nothing slips.</p></div>
-      <div class="card feat"><div class="dot">🌤</div><h3>Tennis weather &amp; trips</h3><p>Hour-by-hour playability at the venue, what to pack, drive time and trip costs.</p></div>
+    <div class="sec-head reveal"><span class="eyebrow">Everything inside</span><h2>Built for junior tennis families</h2></div>
+    <div class="grid3 reveal">
+      <div class="card feat"><div class="dot">🔎</div><h3>Find tournaments</h3><p>Search USTA by distance (up to anywhere, nearest first), level, age and events, ranked by fit. Register on USTA in one click from any tournament.</p></div>
+      <div class="card feat"><div class="dot">🗓</div><h3>Upcoming</h3><p>The tournaments you've signed up for, from your USTA account — added automatically, with withdrawals flagged.</p></div>
+      <div class="card feat"><div class="dot">📈</div><h3>UTR &amp; WTN</h3><p>Ratings for the whole field, matched carefully by name and town, kept for a week across tournaments.</p></div>
+      <div class="card feat"><div class="dot">🎯</div><h3>Points planner</h3><p>Your counted best 6, the Combined calculation, drop-off dates and the result to beat.</p></div>
+      <div class="card feat"><div class="dot">⏰</div><h3>Deadlines</h3><p>Saved tournaments and everything else, with reminders and calendar export.</p></div>
+      <div class="card feat"><div class="dot">✉️</div><h3>Morning email</h3><p>Weather, packing list, venue and first match on every tournament morning.</p></div>
+      <div class="card feat"><div class="dot">🧭</div><h3>Season &amp; opponents</h3><p>Season review, rivals, toughest opponents and full head-to-heads with scores.</p></div>
+      <div class="card feat"><div class="dot">🏆</div><h3>Memories &amp; trophies</h3><p>Photos, results, highlights and a share card for the family chat.</p></div>
+      <div class="card feat"><div class="dot">🔄</div><h3>Always up to date</h3><p>Free updates arrive inside the app; your activation survives Windows updates and reinstalls.</p></div>
     </div>
-    <p class="small" style="margin-top:18px">Also: find tournaments near you with filters, season review, trophy cabinet with photos, an opponents book, and Ace, an offline helper that answers questions about your tournaments.</p>
   </div>
 </section>
 
 <section id="buy">
   <div class="wrap">
-    <h2>How to buy</h2>
-    <p class="sub">One licence works on one PC. Activation is offline and private.</p>
-    <div class="steps">
-      <div class="card step"><div><h3>Download and install</h3><p>Use the download button above. Windows may say "Windows protected your PC" because AceLens is new: click <em>More info</em> → <em>Run anyway</em>.</p></div></div>
-      <div class="card step"><div><h3>Copy your machine code</h3><p>Open AceLens. It shows a code for your PC, like <code>7KQ2-M4XD-9PRT-3HWB</code>. It contains nothing personal.</p></div></div>
-      <div class="card step"><div><h3>Send it with your payment</h3><p>Email your machine code. You'll get payment details back, and once it's paid, your activation code.</p></div></div>
-      <div class="card step"><div><h3>Paste the activation code</h3><p>AceLens unlocks on that PC, then a short setup gets you going. Updates are free and arrive inside the app.</p></div></div>
+    <div class="sec-head reveal"><span class="eyebrow">Get AceLens</span><h2>How to buy</h2><p class="sub">One licence works on one PC. Activation is offline and private.</p></div>
+    <div class="steps reveal">
+      <div class="card step"><h3>Download &amp; install</h3><p>Windows may say "Windows protected your PC" because AceLens is new: click <em>More info</em> → <em>Run anyway</em>.</p></div>
+      <div class="card step"><h3>Copy your machine code</h3><p>AceLens shows a code for your PC, like <code>7KQ2-M4XD-9PRT-3HWB</code>. It contains nothing personal.</p></div>
+      <div class="card step"><h3>Send it with payment</h3><p>Email your machine code; you'll get payment details, then your activation code.</p></div>
+      <div class="card step"><h3>Paste the code</h3><p>AceLens unlocks on that PC. A short setup gets you going; updates are free.</p></div>
     </div>
-    <div class="card contact">
+    <div class="card contact reveal">
       <div>Price: <strong id="price">contact for price</strong><br><span class="small" style="margin:0">Questions, buying, or moving to a new PC:</span></div>
       <a class="btn primary" id="mail" href="#">Email to buy</a>
     </div>
@@ -142,17 +509,19 @@
 
 <section id="faq" class="faq">
   <div class="wrap">
-    <h2>Questions</h2>
-    <details class="card"><summary>Is my data private?</summary><p>Yes. Everything stays on your PC. AceLens reads public tournament pages directly from your computer, gently, and never sends your data to the seller or anyone else.</p></details>
-    <details class="card"><summary>Do I need a USTA or UTR account?</summary><p>Not for tournaments, fields and national standings. UTR ratings use your own free UTR sign-in, done once in a window; AceLens never sees your password. Draws need a one-time USTA sign-in that's erased right after reading.</p></details>
+    <div class="sec-head reveal"><h2>Questions</h2></div>
+    <details class="card"><summary>Is my data private?</summary><p>Yes. Everything stays on your PC. AceLens reads public tournament pages directly from your computer, gently, and never sends your data to the seller or anyone else. The optional morning email is sent only to the addresses you choose.</p></details>
+    <details class="card"><summary>Do I need a USTA or UTR account?</summary><p>Not for finding tournaments, fields and national standings. UTR ratings use your own UTR sign-in, done once in a window inside AceLens. Your upcoming tournaments, match history, ranking points and match-day draws use your USTA sign-in, also done once inside AceLens. AceLens never sees your passwords and only reads.</p></details>
+    <details class="card"><summary>How accurate is the weather a month out?</summary><p>Within about 6 days it's the National Weather Service forecast at the venue. Further out it's a long-range prediction: 30 years of that date at the venue, adjusted by NOAA's official outlook for this year — a guide for planning, replaced by the real forecast automatically.</p></details>
     <details class="card"><summary>What if I get a new computer?</summary><p>Email the new PC's machine code and you'll get a code for it. Windows updates and reinstalls don't affect your activation.</p></details>
     <details class="card"><summary>Does it work on Mac?</summary><p>Not yet: Windows 10 and 11 only.</p></details>
-    <details class="card"><summary>Is AceLens part of USTA or UTR?</summary><p>No. AceLens is independent and not affiliated with, endorsed by or sponsored by the USTA, Universal Tennis (UTR) or the National Weather Service. Always check official sources before entering a tournament.</p></details>
+    <details class="card"><summary>Is AceLens part of USTA or UTR?</summary><p>No. AceLens is independent and not affiliated with, endorsed by or sponsored by the USTA, Universal Tennis (UTR), NOAA or the National Weather Service. Always check official sources before entering a tournament.</p></details>
   </div>
 </section>
+</main>
 
 <footer>
-  <div class="wrap">© 2026 Inban Tamizhselvan · AceLens is proprietary software · <a href="EULA.txt">Licence agreement</a> · Not affiliated with USTA, UTR or the NWS.</div>
+  <div class="wrap">© 2026 Inban Tamizhselvan · AceLens is proprietary software · <a href="EULA.txt">Licence agreement</a> · Not affiliated with USTA, UTR, NOAA or the NWS. All players shown on this page are made up.</div>
 </footer>
 
 <script>
@@ -169,6 +538,191 @@
     mail.removeAttribute("href");
     mail.style.opacity = ".55";
   }
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  // ---- reveal on scroll + counters
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add("in");
+    $$("[data-count]", e.target).forEach((el) => {
+      const to = +el.dataset.count; let n = 0; const step = Math.max(1, Math.ceil(to / 30));
+      const t = setInterval(() => { n = Math.min(to, n + step); el.textContent = n; if (n >= to) clearInterval(t); }, 30);
+    });
+    io.unobserve(e.target);
+  }), { threshold: 0.15 });
+  $$(".reveal").forEach((el) => io.observe(el));
+
+  // ---- the field (made-up players)
+  const F = [
+    ["Leo Park", 2531, 9.12, 19.2, "F1", "1", [1, 2]], ["Ethan Cole", 2444, 9.49, 17.7, "F1", "2", [0, 1]], ["Ravi Shah", 1966, 8.76, 22.2, "F1", "3", [2, 0]],
+    ["Sam Rivera", 1939, 8.56, 23.3, "F1", "4", null], ["Noah Kim", 1903, 8.47, 23.8, "F1", "", [1, 1]], ["Max Brooks", 1482, 8.16, 26.2, "F1", "", [3, 0]],
+    ["Owen Hart", 1350, 7.93, 26.9, "F1", "", null], ["Arjun Rao", 1288, 7.4, 28.4, "F1", "", [0, 0]], ["Jude Moss", 990, 7.1, 29.6, "F2", "", null],
+    ["Theo Lane", 870, 6.85, 30.2, "F2", "", [1, 0]], ["Kai Brennan", 610, 6.4, 31.5, "F2", "", null], ["Eli Ford", 420, 6.02, 33.1, "F2", "", null],
+  ];
+  let sortK = "pts", flt = "all";
+  function renderField() {
+    const rows = F.filter((r) => flt === "all" || r[4] === flt).slice().sort((a, b) => sortK === "pts" ? b[1] - a[1] : sortK === "utr" ? b[2] - a[2] : a[3] - b[3]);
+    $("#fbody").innerHTML = rows.map((r, i) => {
+      const me = r[0] === "Sam Rivera";
+      const cut = flt === "all" && sortK === "pts" && i === 7;
+      const h = r[6] ? `${r[6][0]}–${r[6][1]}` : "–";
+      return `<tr class="${me ? "me" : ""}${cut ? " cut" : ""}" data-i="${F.indexOf(r)}"><td class="num">${i + 1}</td><td>${r[5] ? `<span class="seed">[${r[5]}]</span>` : ""}${r[0]}${me ? ' <span class="tag mint">You</span>' : ""} <span class="flight">${r[4]}</span></td><td class="r num">${r[1].toLocaleString()}</td><td class="r num">${r[2].toFixed(2)}</td><td class="r num hide-s">${r[3].toFixed(1)}</td><td class="hide-s num">${h}</td></tr>`;
+    }).join("");
+  }
+  $$("[data-sort]").forEach((b) => b.onclick = () => { sortK = b.dataset.sort; $$("[data-sort]").forEach((x) => x.classList.toggle("on", x === b)); renderField(); });
+  $$("[data-fl]").forEach((b) => b.onclick = () => { flt = b.dataset.fl; $$("[data-fl]").forEach((x) => x.classList.toggle("on", x === b)); renderField(); });
+  $("#fbody").onclick = (e) => {
+    const tr = e.target.closest("tr"); if (!tr) return; const r = F[+tr.dataset.i];
+    if (r[0] === "Sam Rivera") { $("#scout").innerHTML = "<b>That's you.</b> #4 of 44 by points · likely seed 4 in Flight 1 · inside the cut by 1,449 points."; return; }
+    const h = r[6]; const d = (r[2] - 8.56).toFixed(2);
+    $("#scout").innerHTML = `<b>${r[0]}</b> · ${r[1].toLocaleString()} pts · UTR ${r[2].toFixed(2)} (${d > 0 ? "+" : ""}${d} vs you) · WTN ${r[3]}<br>` +
+      (h ? `Head-to-head <b>${h[0]}–${h[1]}</b> · last met Oct 4, R16: ${h[0] >= h[1] ? "won 6-4 7-5" : "lost 4-6 3-6"}` : "Not played yet — " + (r[2] > 8.56 ? "make every point long." : "play your game."));
+  };
+  renderField();
+
+  // ---- bracket (8-draw)
+  const P = ["[1] Leo Park", "Kai Brennan", "Owen Hart", "[4] Sam Rivera", "[3] Ravi Shah", "Theo Lane", "Max Brooks", "[2] Ethan Cole"];
+  const W = {};
+  const names = ["Quarterfinals", "Semifinals", "Final", "Winner"];
+  const players = (r, m) => r === 0 ? [P[2 * m], P[2 * m + 1]] : [W[`${r - 1}-${2 * m}`] || null, W[`${r - 1}-${2 * m + 1}`] || null];
+  function prune() { for (let r = 0; r < 3; r++) for (let m = 0; m < 4 >> r; m++) { const w = W[`${r}-${m}`]; const [a, b] = players(r, m); if (w && a && b && w !== a && w !== b) delete W[`${r}-${m}`]; } }
+  function renderBracket() {
+    let h = "";
+    for (let r = 0; r < 3; r++) {
+      h += `<div class="bcol"><h5>${names[r]}</h5>`;
+      for (let m = 0; m < 4 >> r; m++) {
+        const [a, b] = players(r, m); const w = W[`${r}-${m}`];
+        const line = (n) => {
+          if (!n) return `<button class="bl tbd" disabled>TBD</button>`;
+          const sd = n.match(/^\[(\d)\] /); const nm = n.replace(/^\[\d\] /, "");
+          const cls = ["bl", w === n ? "win" : w ? "lose" : "", nm === "Sam Rivera" ? "me" : ""].join(" ");
+          return `<button class="${cls}" data-r="${r}" data-m="${m}" data-n="${n}">${sd ? `<span class="sd">[${sd[1]}]</span>` : ""}${nm}${w === n ? " ✓" : ""}</button>`;
+        };
+        h += `<div class="bm">${line(a)}${line(b)}</div>`;
+      }
+      h += `</div>`;
+    }
+    const champ = W["2-0"];
+    h += `<div class="bcol"><h5>Winner</h5><div class="bm"><button class="bl ${champ ? "win" : "tbd"}" disabled>${champ ? "🏆 " + champ.replace(/^\[\d\] /, "") : "TBD"}</button></div></div>`;
+    $("#bracket").innerHTML = h;
+  }
+  $("#bracket").onclick = (e) => {
+    const b = e.target.closest("button[data-n]"); if (!b) return;
+    const k = `${b.dataset.r}-${b.dataset.m}`; W[k] = W[k] === b.dataset.n ? undefined : b.dataset.n; if (!W[k]) delete W[k];
+    prune(); renderBracket();
+    $("#bnote").textContent = W["2-0"] ? "Champion! In AceLens the result also feeds your history and points." : "Winners move forward; switch a result and later rounds update.";
+  };
+  renderBracket();
+
+  // ---- weather chart with scrubber
+  const H = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+  const T = [52, 55, 59, 63, 66, 69, 71, 72, 71, 69, 66, 62, 59, 56];
+  const R = [5, 5, 10, 10, 15, 20, 25, 40, 55, 45, 30, 20, 10, 10];
+  const WD = [4, 5, 6, 8, 9, 11, 12, 14, 16, 14, 11, 9, 7, 6];
+  const score = (i) => Math.max(10, Math.round(100 - Math.max(0, R[i] - 20) * 1.2 - Math.max(0, WD[i] - 10) * 3 - Math.max(0, 58 - T[i]) * 2));
+  const wx = $("#wx"); const X = (i) => 40 + i * (500 / (H.length - 1)); const Y = (t) => 170 - (t - 45) * 4;
+  function drawWx(sel) {
+    let s = "";
+    H.forEach((h, i) => { const sc = score(i); const c = sc >= 75 ? "#4be58f" : sc >= 50 ? "#ffc53d" : "#ff5a6e"; s += `<rect x="${X(i) - 17}" y="10" width="34" height="6" rx="3" fill="${c}" opacity=".8"/>`; });
+    H.forEach((h, i) => { const bh = R[i] * 0.6; s += `<rect x="${X(i) - 8}" y="${200 - bh}" width="16" height="${bh}" rx="3" fill="#6cb4ff" opacity=".45"/>`; });
+    s += `<path d="${T.map((t, i) => `${i ? "L" : "M"}${X(i)},${Y(t)}`).join(" ")}" fill="none" stroke="#3df2c4" stroke-width="3" stroke-linecap="round"/>`;
+    T.forEach((t, i) => { s += `<text x="${X(i)}" y="${Y(t) - 9}" font-size="10.5" fill="#b9cfd1" text-anchor="middle">${t}°</text>`; });
+    H.forEach((h, i) => { if (i % 2 === 0) s += `<text x="${X(i)}" y="216" font-size="10.5" fill="#87a4a9" text-anchor="middle">${h > 12 ? h - 12 + "p" : h + "a"}</text>`; });
+    s += `<line x1="${X(sel)}" x2="${X(sel)}" y1="18" y2="200" stroke="#e6ff3f" stroke-width="1.5" stroke-dasharray="4 4"/><circle cx="${X(sel)}" cy="${Y(T[sel])}" r="6" fill="#e6ff3f" stroke="#03141b" stroke-width="2"/>`;
+    wx.innerHTML = s;
+    const sc = score(sel); const why = R[sel] > 30 ? `${R[sel]}% chance of rain — have a towel and a plan B` : WD[sel] > 12 ? `Gusty (${WD[sel]} mph): shorter swing, toss lower` : T[sel] < 58 ? "Cool: warm up longer, ball bounces lower" : "Great conditions";
+    $("#wxd").innerHTML = `<span class="play">${sc}</span><div>${H[sel] > 12 ? H[sel] - 12 : H[sel]} ${H[sel] >= 12 ? "pm" : "am"}</div><div class="big">${T[sel]}°</div><div>Rain ${R[sel]}% · wind ${WD[sel]} mph</div><div style="margin-top:8px;color:#f0f8f5">${why}</div><div style="margin-top:8px">Best window: <b style="color:#3df2c4">9 am – 1 pm</b></div>`;
+  }
+  let wsel = 3; drawWx(wsel);
+  const pick = (ev) => { const r = wx.getBoundingClientRect(); const x = ((ev.clientX - r.left) / r.width) * 560; wsel = Math.max(0, Math.min(H.length - 1, Math.round((x - 40) / (500 / (H.length - 1))))); drawWx(wsel); };
+  let drag = false; wx.addEventListener("pointerdown", (e) => { drag = true; pick(e); }); window.addEventListener("pointerup", () => drag = false); wx.addEventListener("pointermove", (e) => { if (drag || e.pointerType === "mouse") pick(e); });
+
+  // ---- points calculator (made-up results)
+  const S = [["L5 Open · Dec", 225, 56], ["L4 Closed · Apr", 211, 0], ["L3 Closed · May", 270, 22], ["L5 Open · Jun", 225, 22], ["L5 Open · Jul", 180, 91], ["L5 Open · Aug", 300, 102], ["L5 Open · Nov", 300, 11], ["L6 · Jul", 95, 0]];
+  const D = [["L3 Closed · Jan", 673], ["L4 Open · Aug", 320], ["L3 Closed · May", 447], ["L5 Open · Apr", 220], ["Doubles · Jul", 300]];
+  function renderCalc() {
+    const sTot = S.map((r, i) => ({ i, t: r[1] + r[2] })).sort((a, b) => b.t - a.t);
+    const sIn = new Set(sTot.slice(0, 6).map((x) => x.i));
+    const dTot = D.map((r, i) => ({ i, t: r[1] })).sort((a, b) => b.t - a.t);
+    const dIn = new Set(dTot.slice(0, 6).map((x) => x.i));
+    $("#sres").innerHTML = S.map((r, i) => `<div class="res ${sIn.has(i) ? "" : "out"}"><span>${r[0]}</span><input type="number" min="0" step="1" value="${r[1]}" data-s="${i}" aria-label="${r[0]} points"><span class="c">${r[2] ? "+" + r[2] : "–"}${sIn.has(i) ? " ✓" : ""}</span></div>`).join("");
+    $("#dres").innerHTML = D.map((r, i) => `<div class="res ${dIn.has(i) ? "" : "out"}"><span>${r[0]}</span><input type="number" min="0" step="1" value="${r[1]}" data-d="${i}" aria-label="${r[0]} points"><span class="c">${dIn.has(i) ? "✓" : ""}</span></div>`).join("");
+    const singles = [...sIn].reduce((a, i) => a + S[i][1], 0), bonus = [...sIn].reduce((a, i) => a + S[i][2], 0), dbl = Math.round(0.15 * [...dIn].reduce((a, i) => a + D[i][1], 0));
+    $("#formula").innerHTML = `<div><span class="v num">${singles.toLocaleString()}</span><span class="l">Singles · best 6</span></div><span class="op">+</span><div><span class="v num">${dbl}</span><span class="l">15% of best 6 doubles</span></div><span class="op">+</span><div><span class="v num">${bonus}</span><span class="l">Bonus · attached to counted singles</span></div><span class="op">=</span><div class="tot"><span class="v num">${(singles + dbl + bonus).toLocaleString()}</span><span class="l">Combined points</span></div>`;
+  }
+  document.addEventListener("input", (e) => {
+    const t = e.target; if (t.dataset.s != null) S[+t.dataset.s][1] = Math.max(0, +t.value || 0); else if (t.dataset.d != null) D[+t.dataset.d][1] = Math.max(0, +t.value || 0); else return;
+    const pos = t.selectionStart; const key = t.dataset.s != null ? `[data-s="${t.dataset.s}"]` : `[data-d="${t.dataset.d}"]`; renderCalc(); const n = $(key); n.focus(); try { n.setSelectionRange(pos, pos); } catch {}
+  });
+  renderCalc();
+
+  // ---- history (made-up)
+  const HY = {
+    all: { rec: "112–58", pct: 66, titles: 7, streak: "W5", form: [55, 58, 52, 60, 57, 63, 61, 66, 64, 70, 68, 72, 69, 74], rounds: [["R32", 82], ["R16", 71], ["QF", 44], ["SF", 58], ["F", 54]], ins: ["Wins 85% after taking the first set, but comes back only 20% after losing it", "Quarterfinals are the hurdle: 44% vs 76% in earlier rounds", "Back-to-back weekends: 52% vs 71% after a week off — rest pays", "Third sets: 9–4 — strong under pressure"] },
+    "2026": { rec: "48–19", pct: 72, titles: 3, streak: "W5", form: [60, 62, 66, 64, 70, 68, 72, 69, 74, 76], rounds: [["R32", 88], ["R16", 78], ["QF", 55], ["SF", 60], ["F", 75]], ins: ["2026: 72% won vs 61% in 2025 (+11 points)", "Level 5: 81% — ready for more Level 4s", "Best month: June (86%)", "Most played: Max Brooks (3–1)"] },
+    "2025": { rec: "40–26", pct: 61, titles: 2, streak: "L1", form: [50, 54, 52, 57, 55, 60, 58, 62, 61], rounds: [["R32", 76], ["R16", 64], ["QF", 38], ["SF", 50], ["F", 33]], ins: ["Quarterfinals stall: 38% (13 matches)", "Indoor winter 54% vs outdoor summer 66%", "Tiebreak sets: 4–6 — a place to gain points", "Doubles with the same partner: 11–3"] },
+  };
+  function renderHist(k) {
+    const d = HY[k];
+    $("#hk").innerHTML = `<div class="h-kpi"><b class="num">${d.rec}</b><span>singles</span></div><div class="h-kpi"><b class="num">${d.pct}%</b><span>won</span></div><div class="h-kpi"><b class="num">${d.titles}</b><span>titles</span></div><div class="h-kpi"><b>${d.streak}</b><span>streak</span></div>`;
+    const W2 = 560, H2 = 150, p = 20; const x = (i) => p + i * ((W2 - 2 * p) / (d.form.length - 1)); const y = (v) => H2 - p - ((v - 40) / 50) * (H2 - 2 * p);
+    $("#form").innerHTML = `<line x1="${p}" x2="${W2 - p}" y1="${y(50)}" y2="${y(50)}" stroke="rgba(255,255,255,.08)"/><text x="2" y="${y(50) + 4}" font-size="10" fill="#87a4a9">50%</text>` +
+      `<path d="${d.form.map((v, i) => `${i ? "L" : "M"}${x(i)},${y(v)}`).join(" ")} L${x(d.form.length - 1)},${H2 - p} L${x(0)},${H2 - p} Z" fill="rgba(61,242,196,.1)"/>` +
+      `<path d="${d.form.map((v, i) => `${i ? "L" : "M"}${x(i)},${y(v)}`).join(" ")}" fill="none" stroke="#3df2c4" stroke-width="2.6"/>` +
+      d.form.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="#3df2c4"><title>${v}% (rolling)</title></circle>`).join("");
+    const low = d.rounds.reduce((a, b) => (b[1] < a[1] ? b : a));
+    $("#funnel").innerHTML = d.rounds.map((r) => `<div class="fr ${r === low ? "stall" : ""}"><span>${r[0]}</span><div class="fbar"><span style="width:0%" data-w="${r[1]}"></span></div><span class="num">${r[1]}%${r === low ? " ⚑" : ""}</span></div>`).join("");
+    requestAnimationFrame(() => $$("#funnel .fbar > span").forEach((s) => (s.style.width = s.dataset.w + "%")));
+    const ic = ["🎯", "⚑", "🔋", "🧠"];
+    $("#hins").innerHTML = d.ins.map((t, i) => `<li><i>${ic[i % 4]}</i><span>${t}</span></li>`).join("");
+  }
+  $$("[data-yr]").forEach((b) => b.onclick = () => { $$("[data-yr]").forEach((x) => x.classList.toggle("on", x === b)); renderHist(b.dataset.yr); });
+  renderHist("all");
+
+
+  // ---- season & opponents (made-up)
+  const MON = [["Jan", 4, 2], ["Feb", 3, 2], ["Mar", 5, 1], ["Apr", 6, 3], ["May", 7, 2], ["Jun", 6, 1], ["Jul", 5, 3], ["Aug", 6, 2], ["Sep", 3, 1], ["Oct", 2, 2], ["Nov", 5, 0]];
+  $("#sk").innerHTML = `<div class="h-kpi"><b class="num">52–19</b><span>record</span></div><div class="h-kpi"><b class="num">73%</b><span>won</span></div><div class="h-kpi"><b class="num">3</b><span>titles</span></div><div class="h-kpi"><b class="num">2</b><span>finals</span></div>`;
+  (function () {
+    const max = Math.max(...MON.map((m) => m[1] + m[2])); const bw = 34; let s = "";
+    MON.forEach((m, i) => {
+      const x = 22 + i * 49, hw = (m[1] / max) * 90, hl = (m[2] / max) * 90;
+      s += `<rect x="${x}" y="${100 - hw}" width="${bw}" height="${hw}" rx="4" fill="#3df2c4" opacity=".85"><title>${m[0]}: ${m[1]} wins</title></rect>`;
+      s += `<rect x="${x}" y="${100 - hw - hl - 2}" width="${bw}" height="${hl}" rx="4" fill="#ff5a6e" opacity=".75"><title>${m[0]}: ${m[2]} losses</title></rect>`;
+      s += `<text x="${x + bw / 2}" y="114" font-size="10.5" fill="#87a4a9" text-anchor="middle">${m[0]}</text>`;
+    });
+    $("#months").innerHTML = s;
+  })();
+  const OPS = {
+    rivals: [["Max Brooks", 3, 1, ["Nov 2 · QF · W 6-4 6-3", "Aug 23 · SF · W 7-5 6-4", "Jun 28 · F · L 4-6 6-7(5)", "Mar 8 · R16 · W 6-2 6-1"]], ["Noah Kim", 2, 2, ["Oct 4 · R16 · L 4-6 3-6", "Jul 19 · QF · W 6-3 3-6 10-7", "May 30 · R32 · W 6-1 6-2", "Jan 10 · QF · L 2-6 5-7"]], ["Leo Park", 1, 2, ["Sep 6 · SF · L 3-6 4-6", "Apr 5 · F · W 7-6(4) 6-4", "Feb 1 · QF · L 1-6 4-6"]]],
+    tough: [["Ethan Cole", 0, 3, ["Oct 25 · F · L 3-6 2-6", "Jun 14 · SF · L 4-6 4-6", "Feb 22 · QF · L 6-7(3) 4-6"]], ["Leo Park", 1, 2, ["Sep 6 · SF · L 3-6 4-6", "Apr 5 · F · W 7-6(4) 6-4", "Feb 1 · QF · L 1-6 4-6"]]],
+    best: [["Owen Hart", 3, 0, ["Nov 14 · R16 · W 6-2 6-0", "Aug 1 · QF · W 6-4 6-1", "May 23 · R32 · W 6-0 6-1"]], ["Theo Lane", 2, 0, ["Oct 10 · R32 · W 6-3 6-2", "Jul 12 · QF · W 6-1 6-4"]]],
+  };
+  function renderOps(k) {
+    $("#opps").innerHTML = OPS[k].map((o, i) => `<button class="chip" style="margin:4px 6px 0 0;height:30px" data-o="${k}:${i}">${o[0]} <b style="color:${o[1] >= o[2] ? "#4be58f" : "#ff5a6e"}">${o[1]}–${o[2]}</b></button>`).join("");
+  }
+  $$("[data-op]").forEach((b) => b.onclick = () => { $$("[data-op]").forEach((x) => x.classList.toggle("on", x === b)); renderOps(b.dataset.op); });
+  $("#opps").onclick = (e) => {
+    const b = e.target.closest("[data-o]"); if (!b) return; const [k, i] = b.dataset.o.split(":"); const o = OPS[k][+i];
+    $("#opd").innerHTML = `<b>${o[0]}</b> · head-to-head <b>${o[1]}–${o[2]}</b><br>` + o[3].map((m) => `<span style="color:${m.includes(" W ") ? "#4be58f" : "#ff5a6e"}">●</span> ${m}`).join("<br>");
+  };
+  renderOps("rivals");
+
+  // ---- gentle reads simulation
+  const kinds = ["field · players", "standings · page 1", "UTR · search", "WTN · profile", "draw · signed in", "weather · NWS"];
+  let used = 0; const rlog = $("#rlog");
+  function tick() {
+    if (!document.hidden) {
+      used = (used + 1) % 61; $("#mh").textContent = `${used} / 60`; $("#mbar").style.width = (used / 60) * 100 + "%";
+      const gap = (3 + Math.random() * 3).toFixed(1); const d = document.createElement("div");
+      d.textContent = `${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}  ${kinds[Math.floor(Math.random() * kinds.length)].padEnd(20)} paced +${gap}s`;
+      rlog.prepend(d); while (rlog.children.length > 9) rlog.lastChild.remove();
+    }
+    setTimeout(tick, 1600 + Math.random() * 1400);
+  }
+  tick();
 </script>
 </body>
 </html>
