@@ -1,12 +1,12 @@
 ACELENS — END-USER LICENCE AGREEMENT
-Version 1.0 · Copyright © 2026 Inban Tamizhselvan. All rights reserved.
+Version 1.0 · Copyright © 2026 AceLens. All rights reserved.
 
 Please read this agreement before installing AceLens. By installing, activating
 or using AceLens you agree to it. If you don't agree, don't install it.
 
 1. WHO THIS IS BETWEEN
 This agreement is between you (the person who bought the licence, the
-"Licensee") and Inban Tamizhselvan (the "Owner"), who owns AceLens.
+"Licensee") and AceLens (the "Owner").
 
 2. WHAT YOU GET
 You get a personal, non-exclusive, non-transferable licence to install and use

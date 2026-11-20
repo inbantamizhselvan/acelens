@@ -7,6 +7,6 @@ AceLens for Windows: your junior tennis tournaments, the whole field in one list
 
 AceLens needs an activation code to run (one licence per PC). See the website for how to buy.
 
-This repository holds only the public website and the installer releases. AceLens is proprietary software. © 2026 Inban Tamizhselvan. All rights reserved. See [EULA.txt](EULA.txt).
+This repository holds only the public website and the installer releases. AceLens is proprietary software. © 2026 AceLens. All rights reserved. See [EULA.txt](EULA.txt).
 
 Not affiliated with, endorsed by or sponsored by the USTA, Universal Tennis (UTR) or the US National Weather Service.
