@@ -248,6 +248,11 @@
   .dl-dialog .gc-pane { grid-template-columns: minmax(0, 1fr); }
   .dl-dialog .gc-grid > * { min-width: 0; }
   @media (max-width: 600px) { .dl-dialog .gc-grid { grid-template-columns: minmax(0, 1fr); } .dl-dialog .gc-pane { padding: 14px 14px 16px; } .dl-head { padding: 14px 14px 0; } }
+  .dl-google { display: grid; gap: 10px; }
+  .dl-google[hidden] { display: none; }
+  .dl-gbtn { min-height: 44px; display: flex; justify-content: center; }
+  .dl-or { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 12.5px; }
+  .dl-or::before, .dl-or::after { content: ""; flex: 1; height: 1px; background: var(--line2); }
   .dl-dialog::backdrop { background: rgba(2,10,14,.72); backdrop-filter: blur(4px); }
   .dl-dialog select { background: var(--s2); border: 1px solid var(--line2); border-radius: 10px; padding: 10px 12px; color: var(--text); font: inherit; font-size: 15px; width: 100%; }
   .dl-head { padding: 18px 20px 0; display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
@@ -821,6 +826,11 @@
   </div>
   <form id="dlForm" class="gc-pane" novalidate>
     <p class="dl-fine" style="font-size:14px;margin:0">Tell us who you are, so we can help with setup and let you know about important updates. It takes 20 seconds.</p>
+    <div class="dl-google" id="dlGoogle" hidden>
+      <div class="dl-gbtn" id="dlGBtn" aria-live="polite"></div>
+      <p class="dl-fine" style="margin:0">Your name and email come from your Google account — nothing to type. AceLens never sees your Google password.</p>
+      <div class="dl-or"><span>or type them in</span></div>
+    </div>
     <div class="gc-grid">
       <label>Your name<input name="name" required maxlength="80" autocomplete="name" placeholder="Parent's or player's name"></label>
       <label>Email<input name="email" type="email" required maxlength="120" autocomplete="email" placeholder="you@example.com"></label>
@@ -898,6 +908,9 @@
     const dlg = document.getElementById("dlDialog"), form = document.getElementById("dlForm");
     if (!dlg || !form || typeof dlg.showModal !== "function") return;
     const SVC = "https://script.google.com/macros/s/AKfycbzvOi7xddEQ1ECrXSBmoXx7d9Rv5idyovLTZeQcwBP0VLbN0Iab5a_BrmdRgjEM4cTr/exec";
+    // "Continue with Google": the site's Google sign-in Client ID (public). Empty = the typed
+    // form only. The same ID goes in api/google-signup.js, which checks each sign-in with Google.
+    const GOOGLE_CLIENT_ID = "";
     let target = null;
     const remembered = () => { try { return localStorage.getItem("acelens.signed") === "1"; } catch (e) { return false; } };
     const go = () => { if (target) window.location.href = target.href; };
@@ -910,11 +923,72 @@
         document.getElementById("dlFor").textContent = mac ? "Download AceLens for Mac" : "Download AceLens for Windows";
         document.getElementById("dlMsg").textContent = "";
         dlg.showModal();
-        const first = form.elements.namedItem("name");
-        if (first) first.focus();
+        if (GOOGLE_CLIENT_ID) showGoogle();
+        else {
+          const first = form.elements.namedItem("name");
+          if (first) first.focus();
+        }
       });
     });
     document.getElementById("dlClose").addEventListener("click", () => dlg.close());
+
+    const isMac = () => !!(target && /\/download\/mac$|\.dmg$/i.test(target.href));
+    const optional = () => {
+      const el = (n) => form.elements.namedItem(n);
+      return { role: el("role").value, age: el("age").value, state: el("state").value.trim(), heard: el("heard").value, consent: el("consent").checked };
+    };
+    const started = (first) => {
+      try { localStorage.setItem("acelens.signed", "1"); } catch (err) {}
+      document.getElementById("dlMsg").innerHTML = '<div class="ok"><b>Thanks' + (first ? ", " + String(first).replace(/[<>&"]/g, "") : "") + '! Your download is starting.</b><span>Open the file when it finishes — the FAQ below has the first-open steps.</span></div>';
+      go();
+      setTimeout(() => dlg.close(), 2500);
+    };
+
+    // Google's sign-in script, loaded once — only when someone opens this dialog
+    let gisReady = null;
+    const loadGis = () => gisReady || (gisReady = new Promise((ok, fail) => {
+      const sc = document.createElement("script");
+      sc.src = "https://accounts.google.com/gsi/client";
+      sc.async = true;
+      sc.onload = () => ok();
+      sc.onerror = () => { gisReady = null; fail(new Error("Google sign-in didn't load")); };
+      document.head.appendChild(sc);
+    }));
+    let gisInit = false;
+    async function onGoogle(resp) {
+      const msg = document.getElementById("dlMsg");
+      msg.innerHTML = '<span class="dl-fine">Signing you in…</span>';
+      try {
+        const r = await fetch("/api/google-signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ credential: resp && resp.credential, os: isMac() ? "macOS" : "Windows", ...optional() }),
+        });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok || !j.ok) throw new Error(j.error || "Google sign-in didn't work.");
+        started(j.first);
+      } catch (err) {
+        msg.innerHTML = '<span class="err">' + String(err.message || err).replace(/[<>&"]/g, "") + ' You can type your name and email below instead.</span>';
+      }
+    }
+    async function showGoogle() {
+      const box = document.getElementById("dlGoogle"), btn = document.getElementById("dlGBtn");
+      box.hidden = false;
+      try {
+        await loadGis();
+        if (!window.google || !google.accounts || !google.accounts.id) throw new Error("no gis");
+        if (!gisInit) {
+          google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onGoogle, auto_select: false, cancel_on_tap_outside: true, context: "signin", ux_mode: "popup", use_fedcm_for_button: true });
+          gisInit = true;
+        }
+        btn.textContent = "";
+        google.accounts.id.renderButton(btn, { type: "standard", theme: "filled_black", size: "large", text: "continue_with", shape: "pill", logo_alignment: "left", width: Math.min(400, Math.max(240, btn.clientWidth || 320)) });
+      } catch (err) {
+        box.hidden = true; // Google unreachable: the typed form still works
+        const first = form.elements.namedItem("name");
+        if (first) first.focus();
+      }
+    }
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const el = (n) => form.elements.namedItem(n);
