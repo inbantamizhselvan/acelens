@@ -64,10 +64,14 @@
   .reveal.in { opacity: 1; transform: none; }
 
   /* stats strip */
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 8px 0 0; }
-  .stat { padding: 18px; }
-  .stat b { display: block; font-size: 28px; letter-spacing: -.01em; }
-  .stat span { color: var(--muted); font-size: 13px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 8px 0 0; }
+  .stat { padding: 18px 18px 20px; display: grid; gap: 6px; align-content: start; }
+  .stat i { font-style: normal; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--mint, #3df2c4); }
+  .stat b { display: block; font-size: 19px; line-height: 1.25; letter-spacing: -.01em; }
+  .stat span { color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+  @media (max-width: 980px) { .stats { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+  .stats-note { margin: 14px 0 0; text-align: center; color: var(--muted); font-size: 13px; }
 
   /* demo window chrome */
   .win { overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
@@ -308,7 +312,7 @@
     .hero, .split, .split.flip, .calc, .wx-panel { grid-template-columns: 1fr; }
     .split.flip > :first-child { order: 0; }
     .grid3, .steps { grid-template-columns: 1fr 1fr; }
-    .stats, .h-kpis { grid-template-columns: 1fr 1fr; }
+    .h-kpis { grid-template-columns: 1fr 1fr; }
     nav a:not(.navbtn):not(.navc) { display: none; }
     .outlook { grid-template-columns: 1fr; }
   }
@@ -423,11 +427,14 @@
   </div>
 
   <div class="stats reveal">
-    <div class="card stat"><b class="num" data-count="44">0</b><span>players' points, UTR &amp; WTN in one list</span></div>
-    <div class="card stat"><b class="num" data-count="30">0</b><span>days of weather — forecast, then long-range</span></div>
-    <div class="card stat"><b class="num" data-count="6">0</b><span>best results that make your ranking, shown exactly</span></div>
-    <div class="card stat"><b class="num" data-count="0">0</b><span>bytes of your tennis data sent anywhere — it stays on your computer</span></div>
+    <div class="card stat"><i>Points</i><b>The USTA 2026 points table</b><span>On every tournament: the points for each round, and the bonus each win in that field is worth.</span></div>
+    <div class="card stat"><i>The field</i><b>Points, UTR &amp; WTN in one list</b><span>Every entrant ranked, seeds from the real draw, and where you'd likely place.</span></div>
+    <div class="card stat"><i>Find tournaments</i><b>Every USTA event near you, ranked by fit</b><span>Saved filters, Singles to Mixed doubles and Team, clash warnings, and a calendar reminder for when registration opens.</span></div>
+    <div class="card stat"><i>Insights</i><b>Every match, every year</b><span>Trends, indoor vs outdoor, hard vs clay, quality of wins at their rating back then, and your UTR alongside.</span></div>
+    <div class="card stat"><i>Coach report</i><b>A PDF you put together</b><span>Choose the sections — season, trends, opponents — and hand your coach one clean report.</span></div>
+    <div class="card stat"><i>On the day</i><b>Draw alerts &amp; 30-day weather</b><span>An email when your draw posts, a tournament-morning email with the weather and what to pack, and the venue's forecast up to 30 days out.</span></div>
   </div>
+  <p class="stats-note reveal">No account and no cloud: your tennis data stays on your computer. The only things that leave it are the emails you switch on.</p>
 </div>
 
 <section id="tour">
