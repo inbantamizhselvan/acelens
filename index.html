@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AceLens — junior tennis tournament intelligence</title>
-<meta name="description" content="AceLens for Windows: every USTA junior tournament you follow, the whole field with points, UTR and WTN, projected draws and seeds, match-day draws, weather a month ahead, your ranking points exactly as USTA counts them, and your full match history turned into insights.">
+<meta name="description" content="AceLens for Windows and Mac: find USTA junior tournaments ranked by fit, the whole field with points, UTR and WTN, the 2026 points table and win bonuses on every tournament, projected and real draws with seeds, weather a month ahead, your ranking points exactly as USTA counts them, and every match turned into Insights with your UTR.">
 <link rel="icon" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -363,7 +363,7 @@
   <div class="wrap">
     <a class="brand" href="#top" aria-label="AceLens home"><img src="logo.svg" alt="" width="32" height="32">AceLens</a>
     <nav>
-      <a href="#field">The field</a><a href="#draw">Draws</a><a href="#weather">Weather</a><a href="#points">Points</a><a href="#history">History</a><a href="#season">Season</a><a href="#different">Why AceLens</a><a href="#faq">FAQ</a><a class="navc" href="#contact">Contact</a>
+      <a href="#field">The field</a><a href="#draw">Draws</a><a href="#weather">Weather</a><a href="#points">Points</a><a href="#insights">Insights</a><a href="#season">Season</a><a href="#different">Why AceLens</a><a href="#faq">FAQ</a><a class="navc" href="#contact">Contact</a>
       <a class="navbtn" href="#buy">Get AceLens</a>
     </nav>
   </div>
@@ -434,7 +434,7 @@
     <div class="card stat"><i>Coach report</i><b>A PDF you put together</b><span>Choose the sections — season, trends, opponents — and hand your coach one clean report.</span></div>
     <div class="card stat"><i>On the day</i><b>Draw alerts &amp; 30-day weather</b><span>An email when your draw posts, a tournament-morning email with the weather and what to pack, and the venue's forecast up to 30 days out.</span></div>
   </div>
-  <p class="stats-note reveal">No account and no cloud: your tennis data stays on your computer. The only things that leave it are the emails you switch on.</p>
+  <p class="stats-note reveal">No account and no cloud: your tennis data stays on your computer. The only things that leave it are the emails and live calendar you switch on.</p>
 </div>
 
 <section id="tour">
@@ -448,7 +448,8 @@
         <ul class="ticks">
           <li>Sort by points, UTR or WTN; filter to your flight</li>
           <li>Click any player to scout them: your head-to-head and every past meeting with scores</li>
-          <li>Reads run quietly in the background while you use the rest of the app</li>
+          <li>Common opponents: players you've both met, and how each of you did</li>
+          <li>Singles, doubles, Mixed doubles and Team events; reads run quietly in the background</li>
         </ul>
       </div>
       <div class="card win">
@@ -474,11 +475,11 @@
       <div>
         <span class="tag ball">Seeds &amp; draws</span>
         <h3>Your projected seed and draw — then the real one on match day.</h3>
-        <p>Before USTA posts the draw, AceLens projects it the way USTA seeds (by the Singles Seeding List): seeds, byes and your likely path. On tournament days it reads the real draw by itself and keeps your bracket live.</p>
+        <p>Before USTA posts the draw, AceLens projects it the way USTA seeds (by the Singles Seeding List): seeds, byes and your likely path. Once the real draw is up, AceLens reads it — with USTA's own seeds [1], [2], [3]… — swaps it in for the projection, keeps your bracket live and can email you that it's posted.</p>
         <ul class="ticks">
           <li>Click a player to mark who won — later rounds follow (try it →)</li>
           <li>Build or fix a draw by hand from your flight's player list</li>
-          <li>Your match time and next opponent, ready for the morning email</li>
+          <li>An email when the draw posts, and your match time and next opponent in the morning email</li>
         </ul>
       </div>
       <div class="card win">
@@ -495,6 +496,7 @@
         <p>Within a week, the US National Weather Service forecast at the venue, hour by hour, with a playability score, the best window to play and what it means on court. Further out, a long-range prediction from 30 years of that date at the venue, nudged by NOAA's outlook for this year.</p>
         <ul class="ticks">
           <li>Drag across the chart for any hour's details</li>
+          <li>Indoor or outdoor, hard or clay: worked out for every tournament, one click to correct — the advice follows</li>
           <li>A packing list that follows the forecast</li>
           <li>An email on tournament mornings with all of it (optional)</li>
         </ul>
@@ -520,10 +522,11 @@
       <div>
         <span class="tag clay">Ranking points, explained</span>
         <h3>See exactly which results make your ranking.</h3>
-        <p>USTA's Combined Standings use your <b>best 6 singles</b> results (each with its bonus points for beating top-500 players) plus <b>15% of your best 6 doubles</b>, over the last 52 weeks. AceLens shows yours exactly as USTA counts them — and when each one drops off.</p>
+        <p>USTA's Combined Standings use your <b>best 6 singles</b> results (each with its bonus points for beating top-500 players) plus <b>15% of your best 6 doubles</b>, over the last 52 weeks. AceLens shows yours exactly as USTA counts them — and when each one drops off. On every tournament, USTA's <b>2026 points table</b> sits beside the players list: the points for each round, and a <b>win bonus</b> column with what beating each player would add.</p>
         <ul class="ticks">
           <li>Change a result in the calculator → watch which ones count</li>
           <li>"The one to beat": the lowest counted result a new one must top</li>
+          <li>Points for each round on every tournament, Mixed and Team events included</li>
           <li>Weekly refresh, the day after USTA updates</li>
         </ul>
       </div>
@@ -543,19 +546,19 @@
     </div>
 
     <!-- history -->
-    <div class="split reveal" id="history">
+    <div class="split reveal" id="insights">
       <div>
-        <span class="tag mint">History &amp; trends</span>
-        <h3>Every match you've played, turned into answers.</h3>
-        <p>One click imports your whole USTA record — every tournament, round and score, all years — and turns it into trends: form over time, where you stall, how you do in third sets, after a week off, against rivals, by level and by season.</p>
+        <span class="tag mint">Insights</span>
+        <h3>Every match you've played, turned into answers — with your UTR alongside.</h3>
+        <p>One click imports your whole USTA record — every tournament, round and score, all years — and turns it into trends: form over time, where you stall, third sets, indoor vs outdoor, hard vs clay, and quality of wins judged by each opponent's rating <i>at the time you played</i>. Your UTR sits right there too: its trend, your goal, and your record against higher- and lower-rated players.</p>
         <ul class="ticks">
-          <li>Filters for singles/doubles, year and level update everything</li>
-          <li>Head-to-head appears automatically when you meet someone again</li>
+          <li>Filters for singles/doubles, indoor/outdoor, year and level update everything</li>
+          <li>A coach report PDF — choose which sections go in</li>
           <li>Plain-English insights with the sample size behind each one</li>
         </ul>
       </div>
       <div class="card win">
-        <div class="win-bar"><i></i><i></i><i></i>&nbsp;History &amp; trends</div>
+        <div class="win-bar"><i></i><i></i><i></i>&nbsp;Insights</div>
         <div class="win-body">
           <div class="ftools"><button class="chip on" data-yr="all">All years</button><button class="chip" data-yr="2026">2026</button><button class="chip" data-yr="2025">2025</button></div>
           <div class="h-kpis" id="hk"></div>
@@ -573,7 +576,8 @@
         <h3>Your season at a glance, and a book on every opponent.</h3>
         <p>The Season review counts every match from your USTA history, UTR and the draws you track — no double counting. The Opponents book keeps everyone you've played: rivals, the ones who have your number, the ones you always beat, with every meeting and score.</p>
         <ul class="ticks">
-          <li>Record by month and level; titles and finals in the trophy cabinet</li>
+          <li>Any season from the year menu: record by month and level, and a coach report</li>
+          <li>Titles and finals in the trophy cabinet</li>
           <li>Rivals (3+ meetings), toughest opponents, best record against</li>
           <li>Doubles too — who you've played against and who you've partnered</li>
         </ul>
@@ -601,10 +605,13 @@
       <div class="card feat"><div class="dot">🌱</div><h3>Seeds before the draw</h3><p>Projected seed and bracket the way USTA seeds — by the Singles Seeding List — with flights split by Combined points.</p></div>
       <div class="card feat"><div class="dot">⚡</div><h3>The field, one by one</h3><p>Points, seeding points, WTN and UTR fill in live as they're found — national standings and UTR read side by side.</p></div>
       <div class="card feat"><div class="dot">🤝</div><h3>Head-to-head everywhere</h3><p>Open any tournament and everyone you've met shows your record and every past score — singles and doubles.</p></div>
-      <div class="card feat"><div class="dot">📬</div><h3>It comes to you</h3><p>New sign-ups added weekly, withdrawals noticed, the real draw read on match day, the morning email sent while AceLens is closed.</p></div>
+      <div class="card feat"><div class="dot">📬</div><h3>It comes to you</h3><p>New sign-ups added weekly, withdrawals noticed, the real draw read and emailed once it posts, the morning email sent even while AceLens is closed.</p></div>
       <div class="card feat"><div class="dot">🔭</div><h3>Weather a month out</h3><p>30 years of that date at the venue, nudged by NOAA's outlook, then the hour-by-hour forecast takes over.</p></div>
       <div class="card feat"><div class="dot">📊</div><h3>Patterns you'd miss</h3><p>First-set → match, comebacks, third sets, rest vs back-to-back weekends, where you stall by round, seasonality.</p></div>
       <div class="card feat"><div class="dot">🛡</div><h3>Private &amp; polite</h3><p>Everything on your PC; reads paced like a person and shared across copies on your Wi-Fi; every request visible.</p></div>
+      <div class="card feat"><div class="dot">🎯</div><h3>What each win is worth</h3><p>USTA's 2026 points for every round of every tournament, and the bonus for beating each player in the field — before you sign up.</p></div>
+      <div class="card feat"><div class="dot">🔗</div><h3>Common opponents</h3><p>Never played someone? See the players you've both met and how each of you did against them.</p></div>
+      <div class="card feat"><div class="dot">🏟</div><h3>Indoor or outdoor, hard or clay</h3><p>Every tournament marked — worked out from the venue and season, one click to correct — with weather advice and your stats split the same way.</p></div>
       <div class="card feat"><div class="dot">🎾</div><h3>Made by a tennis parent</h3><p>Built around a real junior season — the questions you actually ask the week before a tournament.</p></div>
     </div>
   </div>
@@ -616,11 +623,11 @@
     <div class="sec-head reveal"><span class="eyebrow">How it fits your week</span><h2>A tournament week with <em>AceLens</em></h2><p class="sub">Most of it happens by itself once you've signed in to USTA and UTR in the app.</p></div>
     <div class="tl reveal">
       <div class="card tli" data-n="1"><div class="when">Weekly</div><h4>Your sign-ups appear on their own</h4><p>AceLens checks the tournaments you've registered for on USTA and adds them — field, details and all. If you've withdrawn, it notices.</p></div>
-      <div class="card tli" data-n="2"><div class="when">Entries close</div><h4>Deadlines, calendar and reminders</h4><p>Every entry deadline with reminders; one click puts a tournament and its deadline in your calendar.</p></div>
+      <div class="card tli" data-n="2"><div class="when">Entries close</div><h4>Deadlines, calendar and reminders</h4><p>Every entry deadline with reminders; one click puts a tournament, its deadline — or the day registration opens — in your calendar.</p></div>
       <div class="card tli" data-n="3"><div class="when">The week before</div><h4>Read the field, see your seed and flight</h4><p>Points, UTR and WTN for every player fill in one by one; your projected seed and draw appear; scout who you could meet.</p></div>
-      <div class="card tli" data-n="4"><div class="when">Two days out</div><h4>The real draw, read for you</h4><p>With your USTA sign-in, AceLens reads the draw by itself every couple of hours and replaces the projection.</p></div>
+      <div class="card tli" data-n="4"><div class="when">Two days out</div><h4>The real draw, read for you</h4><p>With your USTA sign-in, AceLens reads the draw — seeds and all — replaces the projection and emails you that it's posted.</p></div>
       <div class="card tli" data-n="5"><div class="when">Match morning</div><h4>An email with everything</h4><p>Weather at the courts hour by hour, what to pack, the venue map link and your first match — even if AceLens is closed.</p></div>
-      <div class="card tli" data-n="6"><div class="when">After</div><h4>Results, points and trends update</h4><p>Your history, ranking points and insights refresh weekly. Memories keep the photos and the story.</p></div>
+      <div class="card tli" data-n="6"><div class="when">After</div><h4>Results, points and trends update</h4><p>Your results, ranking points, Insights and UTR refresh weekly. Memories keep the photos and the story.</p></div>
     </div>
   </div>
 </section>
@@ -656,16 +663,19 @@
   <div class="wrap">
     <div class="sec-head reveal"><span class="eyebrow">Everything inside</span><h2>Built for junior tennis families</h2></div>
     <div class="grid3 reveal">
-      <div class="card feat"><div class="dot">🔎</div><h3>Find tournaments</h3><p>Search USTA by distance (up to anywhere, nearest first), level, age and events, ranked by fit. Register on USTA in one click from any tournament.</p></div>
-      <div class="card feat"><div class="dot">🗓</div><h3>Upcoming</h3><p>The tournaments you've signed up for, from your USTA account — added automatically, with withdrawals flagged.</p></div>
+      <div class="card feat"><div class="dot">🔎</div><h3>Find tournaments</h3><p>Search USTA by distance, level, age and events — Singles, Doubles, Mixed doubles, Team — ranked by fit. Save your filters, open any result without adding it, and get a calendar reminder for when registration opens.</p></div>
+      <div class="card feat"><div class="dot">🗓</div><h3>My tournaments</h3><p><b>Signed up</b> — from your USTA account, added automatically, withdrawals flagged — and <b>On the radar</b>, the ones you're watching.</p></div>
       <div class="card feat"><div class="dot">📈</div><h3>UTR &amp; WTN</h3><p>Ratings for the whole field, matched carefully by name and town, kept for a week across tournaments.</p></div>
       <div class="card feat"><div class="dot">🎯</div><h3>Points planner</h3><p>Your counted best 6, the Combined calculation, drop-off dates and the result to beat.</p></div>
-      <div class="card feat"><div class="dot">⏰</div><h3>Deadlines</h3><p>Saved tournaments and everything else, with reminders and calendar export.</p></div>
-      <div class="card feat"><div class="dot">✉️</div><h3>Morning email</h3><p>Weather, packing list, venue and first match on every tournament morning.</p></div>
-      <div class="card feat"><div class="dot">🧭</div><h3>Season &amp; opponents</h3><p>Season review, rivals, toughest opponents and full head-to-heads with scores.</p></div>
+      <div class="card feat"><div class="dot">⏰</div><h3>Deadlines</h3><p>Everything signed up and on the radar, with reminders and calendar export.</p></div>
+      <div class="card feat"><div class="dot">✉️</div><h3>Emails that matter</h3><p>The draw-posted alert, and weather, packing list, venue and first match on every tournament morning.</p></div>
+      <div class="card feat"><div class="dot">📊</div><h3>Insights</h3><p>Every match, every year, with your UTR: trends, indoor vs outdoor, hard vs clay and quality of wins.</p></div>
+      <div class="card feat"><div class="dot">📝</div><h3>Coach report</h3><p>A PDF of the season or your Insights — you pick the sections — ready for your coach.</p></div>
+      <div class="card feat"><div class="dot">🧭</div><h3>Season &amp; opponents</h3><p>Any season from the year menu, rivals, toughest opponents and full head-to-heads with scores.</p></div>
       <div class="card feat"><div class="dot">🏆</div><h3>Memories &amp; trophies</h3><p>Photos, results, highlights and a share card for the family chat.</p></div>
       <div class="card feat"><div class="dot">👨‍👩‍👧</div><h3>Up to 3 players</h3><p>Siblings on one PC: each player has their own tournaments, history, points and morning email.</p></div>
       <div class="card feat"><div class="dot">💾</div><h3>Backup &amp; restore</h3><p>Everything in one file you keep — restore it on a new PC in a click.</p></div>
+      <div class="card feat"><div class="dot">🆔</div><h3>Add by tournament ID</h3><p>Know the ID (like 26-88804) or have a USTA link? Paste it and AceLens reads the tournament. Every tournament page shows its ID, one click to copy.</p></div>
       <div class="card feat"><div class="dot">⌨️</div><h3>Search everything</h3><p>Ctrl K jumps to any tournament, player or action.</p></div>
       <div class="card feat"><div class="dot">🔄</div><h3>Always up to date</h3><p>Free updates arrive inside the app; your activation survives Windows updates and reinstalls.</p></div>
     </div>
@@ -734,7 +744,7 @@
   <div class="wrap">
     <div class="sec-head reveal"><h2>Questions</h2></div>
     <details class="card"><summary>Is there a free trial?</summary><p>Yes — every new install has <b>a month free</b> with everything unlocked and no card — just your name and email before the download. When the trial ends, AceLens shows a button that brings you to the request form with your machine code filled in, or email <a href="mailto:acelens.app@gmail.com">acelens.app@gmail.com</a> — we'll get you set up. Your data stays on your PC the whole time.</p></details>
-    <details class="card"><summary>Is my data private?</summary><p>Yes. Your tennis data — tournaments, results, history, notes — stays on your computer. AceLens reads public tournament pages directly from your computer, gently, and never sends that data to the seller or anyone else. What AceLens does receive: the name and email (and any optional answers) you give before downloading or when you request a code, and a once-a-day check-in from the app with its anonymous machine code, version and computer type (so trials, activations and updates work). The optional morning email is sent only to the addresses you choose. If you switch on the optional live calendar (so Google Calendar or Outlook show your tournaments), your tournament list — names, dates and places — is kept on AceLens's calendar service at a private link so your calendar can read it; switching it off deletes it.</p></details>
+    <details class="card"><summary>Is my data private?</summary><p>Yes. Your tennis data — tournaments, results, history, notes — stays on your computer. AceLens reads public tournament pages directly from your computer, gently, and never sends that data to the seller or anyone else. What AceLens does receive: the name and email (and any optional answers) you give before downloading or when you request a code, and a once-a-day check-in from the app with its anonymous machine code, version and computer type (so trials, activations and updates work). The optional emails — the tournament-morning email and the draw-posted alert — go out through AceLens's mail sender, only to the addresses you choose. If you switch on the optional live calendar (so Google Calendar or Outlook show your tournaments), your tournament list — names, dates and places — is kept on AceLens's calendar service at a private link so your calendar can read it; switching it off deletes it.</p></details>
     <details class="card"><summary>Do I need a USTA or UTR account?</summary><p>Not for finding tournaments, fields and national standings. UTR ratings use your own UTR sign-in, done once in a window inside AceLens. Your upcoming tournaments, match history, ranking points and match-day draws use your USTA sign-in, also done once inside AceLens. AceLens never sees your passwords and only reads.</p></details>
     <details class="card"><summary>How accurate is the weather a month out?</summary><p>Within about 6 days it's the National Weather Service forecast at the venue. Further out it's a long-range prediction: 30 years of that date at the venue, adjusted by NOAA's official outlook for this year — a guide for planning, replaced by the real forecast automatically.</p></details>
     <details class="card"><summary>What if I get a new computer?</summary><p>Email the new PC's machine code and you'll get a code for it. Windows updates and reinstalls don't affect your activation.</p></details>
