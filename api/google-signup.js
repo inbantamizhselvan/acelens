@@ -6,7 +6,7 @@
 
 // The site's Google sign-in Client ID (public by design; from Google Cloud → Google Auth
 // Platform → Clients). Empty = Google sign-in switched off (the page hides the button).
-const CLIENT_ID = "";
+const CLIENT_ID = "76979191331-g493au90m97kik2so05vpma5kbvu14a3.apps.googleusercontent.com";
 const SVC = "https://script.google.com/macros/s/AKfycbzvOi7xddEQ1ECrXSBmoXx7d9Rv5idyovLTZeQcwBP0VLbN0Iab5a_BrmdRgjEM4cTr/exec";
 
 const clip = (v, n) => String(v == null ? "" : v).trim().slice(0, n);

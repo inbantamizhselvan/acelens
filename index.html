@@ -910,7 +910,7 @@
     const SVC = "https://script.google.com/macros/s/AKfycbzvOi7xddEQ1ECrXSBmoXx7d9Rv5idyovLTZeQcwBP0VLbN0Iab5a_BrmdRgjEM4cTr/exec";
     // "Continue with Google": the site's Google sign-in Client ID (public). Empty = the typed
     // form only. The same ID goes in api/google-signup.js, which checks each sign-in with Google.
-    const GOOGLE_CLIENT_ID = "";
+    const GOOGLE_CLIENT_ID = "76979191331-g493au90m97kik2so05vpma5kbvu14a3.apps.googleusercontent.com";
     let target = null;
     const remembered = () => { try { return localStorage.getItem("acelens.signed") === "1"; } catch (e) { return false; } };
     const go = () => { if (target) window.location.href = target.href; };
