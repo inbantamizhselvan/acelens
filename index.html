@@ -373,8 +373,8 @@
       <h1>Know the field, the draw and <em>your path</em> — before you play.</h1>
       <p class="lead">AceLens turns USTA tournaments into one clear picture: every player's points, UTR and WTN, where you'd place and be seeded, the projected and real draw, the weather at the courts, your ranking points exactly as USTA counts them, and your whole match history as insights.</p>
       <div class="cta">
-        <a class="btn primary" id="dlWin" href="https://github.com/inbantamizhselvan/acelens/releases/latest/download/AceLens-Setup.exe">⬇ Download for Windows</a>
-        <a class="btn ghost" id="dlMac" href="https://github.com/inbantamizhselvan/acelens/releases/latest/download/AceLens-mac.dmg">⬇ Download for Mac</a>
+        <a class="btn primary" id="dlWin" href="/download/windows">⬇ Download for Windows</a>
+        <a class="btn ghost" id="dlMac" href="/download/mac">⬇ Download for Mac</a>
         <a class="btn ghost" href="#tour">Take the tour ↓</a>
       </div>
       <div class="small"><b style="color:var(--ball)" class="cfg-trial">1-month free trial</b> · no card · Windows 10/11 and macOS 11+ · free updates</div>
@@ -884,12 +884,12 @@
     let target = null;
     const remembered = () => { try { return localStorage.getItem("acelens.signed") === "1"; } catch (e) { return false; } };
     const go = () => { if (target) window.location.href = target.href; };
-    document.querySelectorAll('a[href*="/releases/latest/download/"]').forEach((a) => {
+    document.querySelectorAll('a[href*="/download/"]').forEach((a) => {
       a.addEventListener("click", (e) => {
         if (remembered()) return; // signed up before on this browser: straight to the file
         e.preventDefault();
         target = a;
-        const mac = /\.dmg$/i.test(a.href);
+        const mac = /\/download\/mac$|\.dmg$/i.test(a.href);
         document.getElementById("dlFor").textContent = mac ? "Download AceLens for Mac" : "Download AceLens for Windows";
         document.getElementById("dlMsg").textContent = "";
         dlg.showModal();
@@ -912,7 +912,7 @@
       const body = {
         action: "signup", name, email, role: el("role").value, age: el("age").value, state: el("state").value.trim(),
         heard: el("heard").value, consent: el("consent").checked, website: el("website").value,
-        os: target && /\.dmg$/i.test(target.href) ? "macOS" : "Windows", page: location.hostname,
+        os: target && /\/download\/mac$|\.dmg$/i.test(target.href) ? "macOS" : "Windows", page: location.hostname,
       };
       const timeout = new Promise((r) => setTimeout(r, 6000));
       await Promise.race([fetch(SVC, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) }).catch(() => null), timeout]);
