@@ -748,7 +748,7 @@
 <section id="faq" class="faq">
   <div class="wrap">
     <div class="sec-head reveal"><h2>Questions</h2></div>
-    <details class="card"><summary>Is there a free trial?</summary><p>Yes — every new install has <b>a month free</b> with everything unlocked and no card — just your name and email before the download. When the trial ends, AceLens shows a button that brings you to the request form with your machine code filled in, or email <a href="mailto:acelens.app@gmail.com">acelens.app@gmail.com</a> — we'll get you set up. Your data stays on your PC the whole time.</p></details>
+    <details class="card"><summary>Is there a free trial?</summary><p>Yes — every new install has <b>a month free</b> with everything unlocked and no card — just a quick Google sign-in before the download. When the trial ends, AceLens shows a button that brings you to the request form with your machine code filled in, or email <a href="mailto:acelens.app@gmail.com">acelens.app@gmail.com</a> — we'll get you set up. Your data stays on your PC the whole time.</p></details>
     <details class="card"><summary>Is my data private?</summary><p>Yes. Your tennis data — tournaments, results, history, notes — stays on your computer. AceLens reads public tournament pages directly from your computer, gently, and never sends that data to the seller or anyone else. What AceLens does receive: the name and email (and any optional answers) you give before downloading or when you request a code, and a once-a-day check-in from the app with its machine code, version and computer type — plus the name and email you gave if you asked for a code (so trials, activations and updates work). The optional emails — the tournament-morning email and the draw-posted alert — go out through AceLens's mail sender, only to the addresses you choose. If you switch on the optional live calendar (so Google Calendar or Outlook show your tournaments), your tournament list — names, dates and places — is kept on AceLens's calendar service at a private link so your calendar can read it; switching it off deletes it.</p></details>
     <details class="card"><summary>Do I need a USTA or UTR account?</summary><p>Not for finding tournaments, fields and national standings. UTR ratings use your own UTR sign-in, done once in a window inside AceLens. Your upcoming tournaments, match history, ranking points and match-day draws use your USTA sign-in, also done once inside AceLens. AceLens never sees your passwords and only reads.</p></details>
     <details class="card"><summary>How accurate is the weather a month out?</summary><p>Within about 6 days it's the National Weather Service forecast at the venue. Further out it's a long-range prediction: 30 years of that date at the venue, adjusted by NOAA's official outlook for this year — a guide for planning, replaced by the real forecast automatically.</p></details>
@@ -825,16 +825,7 @@
     <button type="button" class="dl-x" id="dlClose" aria-label="Close">×</button>
   </div>
   <form id="dlForm" class="gc-pane" novalidate>
-    <p class="dl-fine" style="font-size:14px;margin:0">Tell us who you are, so we can help with setup and let you know about important updates. It takes 20 seconds.</p>
-    <div class="dl-google" id="dlGoogle" hidden>
-      <div class="dl-gbtn" id="dlGBtn" aria-live="polite"></div>
-      <p class="dl-fine" style="margin:0">Your name and email come from your Google account — nothing to type. AceLens never sees your Google password.</p>
-      <div class="dl-or"><span>or type them in</span></div>
-    </div>
-    <div class="gc-grid">
-      <label>Your name<input name="name" required maxlength="80" autocomplete="name" placeholder="Parent's or player's name"></label>
-      <label>Email<input name="email" type="email" required maxlength="120" autocomplete="email" placeholder="you@example.com"></label>
-    </div>
+    <p class="dl-fine" style="font-size:14px;margin:0">Sign in with Google to download — your name and email come from your Google account, nothing to type. We use them to help with setup and tell you about important updates.</p>
     <div class="gc-grid">
       <label>I am a…<select name="role"><option value="">Choose (optional)</option><option>Parent</option><option>Player</option><option>Coach</option><option>Club / academy</option><option>Other</option></select></label>
       <label>Player's age group<select name="age"><option value="">Choose (optional)</option><option>10U</option><option>12U</option><option>14U</option><option>16U</option><option>18U</option><option>Adult</option><option>Several</option></select></label>
@@ -844,8 +835,10 @@
       <label>How did you hear about AceLens?<select name="heard"><option value="">Choose (optional)</option><option>Friend or family</option><option>Coach</option><option>Club</option><option>At a tournament</option><option>Search</option><option>Social media</option><option>Other</option></select></label>
     </div>
     <label class="dl-check"><input type="checkbox" name="consent"> <span>Email me occasional AceLens news and tips (you can say stop any time).</span></label>
-    <input type="text" name="website" class="gc-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <div class="gc-row"><button class="btn primary" type="submit" id="dlGo">Start my download</button><span class="dl-fine">Free 1-month trial · no card</span></div>
+    <div class="dl-google" id="dlGoogle">
+      <div class="dl-gbtn" id="dlGBtn" aria-live="polite"><span class="dl-fine">Loading Google sign-in…</span></div>
+      <p class="dl-fine" style="margin:0;text-align:center">Free 1-month trial · no card · AceLens never sees your Google password.</p>
+    </div>
     <p class="dl-fine">We use these details only to support AceLens and, if you tick the box, to send news — never sold or shared. Ask us to delete them any time at acelens.app@gmail.com. <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a> · <a href="/terms" target="_blank" rel="noopener">Terms</a></p>
     <div class="gc-msg" id="dlMsg" role="status"></div>
   </form>
@@ -923,11 +916,7 @@
         document.getElementById("dlFor").textContent = mac ? "Download AceLens for Mac" : "Download AceLens for Windows";
         document.getElementById("dlMsg").textContent = "";
         dlg.showModal();
-        if (GOOGLE_CLIENT_ID) showGoogle();
-        else {
-          const first = form.elements.namedItem("name");
-          if (first) first.focus();
-        }
+        showGoogle();
       });
     });
     document.getElementById("dlClose").addEventListener("click", () => dlg.close());
@@ -968,13 +957,13 @@
         if (!r.ok || !j.ok) throw new Error(j.error || "Google sign-in didn't work.");
         started(j.first);
       } catch (err) {
-        msg.innerHTML = '<span class="err">' + String(err.message || err).replace(/[<>&"]/g, "") + ' You can type your name and email below instead.</span>';
+        msg.innerHTML = '<span class="err">' + String(err.message || err).replace(/[<>&"]/g, "") + ' Please try again.</span>';
       }
     }
     async function showGoogle() {
-      const box = document.getElementById("dlGoogle"), btn = document.getElementById("dlGBtn");
-      box.hidden = false;
+      const btn = document.getElementById("dlGBtn");
       try {
+        if (!GOOGLE_CLIENT_ID) throw new Error("no client id");
         await loadGis();
         if (!window.google || !google.accounts || !google.accounts.id) throw new Error("no gis");
         if (!gisInit) {
@@ -984,35 +973,11 @@
         btn.textContent = "";
         google.accounts.id.renderButton(btn, { type: "standard", theme: "filled_black", size: "large", text: "continue_with", shape: "pill", logo_alignment: "left", width: Math.min(400, Math.max(240, btn.clientWidth || 320)) });
       } catch (err) {
-        box.hidden = true; // Google unreachable: the typed form still works
-        const first = form.elements.namedItem("name");
-        if (first) first.focus();
+        // Google's sign-in couldn't load (offline, or blocked by an extension or privacy setting)
+        btn.innerHTML = '<span class="err" style="text-align:center">Google sign-in couldn\'t load. Try turning off ad or tracker blockers for this site, or another browser — or <a href="mailto:acelens.app@gmail.com?subject=AceLens%20download">email us</a> for a download link.</span>';
       }
     }
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const el = (n) => form.elements.namedItem(n);
-      const name = el("name").value.trim(), email = el("email").value.trim();
-      const msg = document.getElementById("dlMsg");
-      el("name").setAttribute("aria-invalid", name ? "false" : "true");
-      const okMail = /^[^\s@<>,;]+@[^\s@<>,;]+\.[^\s@<>,;]+$/.test(email);
-      el("email").setAttribute("aria-invalid", okMail ? "false" : "true");
-      if (!name || !okMail) { msg.innerHTML = '<span class="err">Please add your name and a valid email.</span>'; return; }
-      const btn = document.getElementById("dlGo");
-      btn.disabled = true; btn.textContent = "Starting…";
-      const body = {
-        action: "signup", name, email, role: el("role").value, age: el("age").value, state: el("state").value.trim(),
-        heard: el("heard").value, consent: el("consent").checked, website: el("website").value,
-        os: target && /\/download\/mac$|\.dmg$/i.test(target.href) ? "macOS" : "Windows", page: location.hostname,
-      };
-      const timeout = new Promise((r) => setTimeout(r, 6000));
-      await Promise.race([fetch(SVC, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) }).catch(() => null), timeout]);
-      try { localStorage.setItem("acelens.signed", "1"); } catch (err) {}
-      msg.innerHTML = '<div class="ok"><b>Thanks, ' + name.split(" ")[0].replace(/[<>&"]/g, "") + '! Your download is starting.</b><span>Open the file when it finishes — the FAQ below has the first-open steps.</span></div>';
-      btn.disabled = false; btn.textContent = "Start my download";
-      go();
-      setTimeout(() => dlg.close(), 2500);
-    });
+    form.addEventListener("submit", (e) => e.preventDefault());
   })();
 
   // ---- the visitor's own system gets the main download button
