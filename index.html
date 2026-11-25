@@ -826,20 +826,12 @@
   </div>
   <form id="dlForm" class="gc-pane" novalidate>
     <p class="dl-fine" style="font-size:14px;margin:0">Sign in with Google to download — your name and email come from your Google account, nothing to type. We use them to help with setup and tell you about important updates.</p>
-    <div class="gc-grid">
-      <label>I am a…<select name="role"><option value="">Choose (optional)</option><option>Parent</option><option>Player</option><option>Coach</option><option>Club / academy</option><option>Other</option></select></label>
-      <label>Player's age group<select name="age"><option value="">Choose (optional)</option><option>10U</option><option>12U</option><option>14U</option><option>16U</option><option>18U</option><option>Adult</option><option>Several</option></select></label>
-    </div>
-    <div class="gc-grid">
-      <label>State<input name="state" maxlength="30" autocomplete="address-level1" placeholder="e.g. NJ (optional)"></label>
-      <label>How did you hear about AceLens?<select name="heard"><option value="">Choose (optional)</option><option>Friend or family</option><option>Coach</option><option>Club</option><option>At a tournament</option><option>Search</option><option>Social media</option><option>Other</option></select></label>
-    </div>
     <label class="dl-check"><input type="checkbox" name="consent"> <span>Email me occasional AceLens news and tips (you can say stop any time).</span></label>
     <div class="dl-google" id="dlGoogle">
       <div class="dl-gbtn" id="dlGBtn" aria-live="polite"><span class="dl-fine">Loading Google sign-in…</span></div>
       <p class="dl-fine" style="margin:0;text-align:center">Free 1-month trial · no card · AceLens never sees your Google password.</p>
     </div>
-    <p class="dl-fine">We use these details only to support AceLens and, if you tick the box, to send news — never sold or shared. Ask us to delete them any time at acelens.app@gmail.com. <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a> · <a href="/terms" target="_blank" rel="noopener">Terms</a></p>
+    <p class="dl-fine">We use your name and email only to support AceLens and, if you tick the box, to send news — never sold or shared. Ask us to delete them any time at acelens.app@gmail.com. <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a> · <a href="/terms" target="_blank" rel="noopener">Terms</a></p>
     <div class="gc-msg" id="dlMsg" role="status"></div>
   </form>
 </dialog>
@@ -924,7 +916,7 @@
     const isMac = () => !!(target && /\/download\/mac$|\.dmg$/i.test(target.href));
     const optional = () => {
       const el = (n) => form.elements.namedItem(n);
-      return { role: el("role").value, age: el("age").value, state: el("state").value.trim(), heard: el("heard").value, consent: el("consent").checked };
+      return { consent: !!(el("consent") && el("consent").checked) };
     };
     const started = (first) => {
       try { localStorage.setItem("acelens.signed", "1"); } catch (err) {}
